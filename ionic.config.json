@@ -1,5 +1,7 @@
 {
   "name": "bulk_frontend",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular"
 }
