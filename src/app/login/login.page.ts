@@ -37,7 +37,7 @@ export class LoginPage implements OnInit {
     
     this.authService.login(this.userForm.value).subscribe(
       result => {
-        this.authService.setToken(result.data)
+        this.authService.setToken(result.access_token)
       },
       error => {
         this.toastr.error(error, 'Authentification Error');

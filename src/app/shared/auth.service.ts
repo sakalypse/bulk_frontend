@@ -30,39 +30,23 @@ export class AuthService {
   }
 
   public setToken(data: any) {
-    sessionStorage.setItem('token', JSON.stringify(data));
-    /*
-    this.storage.ready().then(() => {
-      this.storage.set('token', JSON.stringify(data));
-    });
-    */
+    localStorage.setItem('token', JSON.stringify(data));
   }
 
   public getToken(): any {
-    return sessionStorage.getItem('token');
-    /*
-    this.storage.ready().then(() => {
-      return this.storage.get('token');
-    });
-    */
-    //JSON.parse(localStorage.getItem('token'));
+    return JSON.parse(localStorage.getItem('token'));
   }
 
   public hasToken(): any {
-    return sessionStorage.getItem('token') ? true : false;
-    /*
-    this.storage.ready().then(() => {
-      return this.storage.get('token') ? true : false;
-    });
-    */
+    return localStorage.getItem('token') ? true : false;
   }
 
   public hasTokenExpired(): boolean {
-    return this.helper.isTokenExpired(this.getToken().token);
+    return this.helper.isTokenExpired(this.getToken());
   }
 
   private decodeToken(): any {
-    return this.helper.decodeToken(this.getToken().token);
+    return this.helper.decodeToken(this.getToken());
   }
 
   public getLoggedUser(): any {
@@ -72,12 +56,7 @@ export class AuthService {
   }
 
   public clearStorage(): void {
-    sessionStorage.clear();
-    /*
-    this.storage.ready().then(() => {
-      this.storage.clear();
-    });
-    */
+    localStorage.clear();
   }
 
   private handleError(error: HttpErrorResponse) {

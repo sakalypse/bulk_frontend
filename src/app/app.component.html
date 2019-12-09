@@ -5,7 +5,7 @@
       <ion-header>
         <ion-toolbar>
           <ion-title>Menu</ion-title>
-          <ion-title slot="end">{{this.username}}</ion-title>
+          <ion-title slot="end">{{this.authService.getLoggedUser()['username']}}</ion-title>
         </ion-toolbar>
       </ion-header>
       <ion-content>

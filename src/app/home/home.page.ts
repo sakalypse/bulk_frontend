@@ -17,10 +17,10 @@ export class HomePage implements OnInit{
     private authService: AuthService,
     private toastr: ToastrService,
     private route: Router) {
-    this.currentUser = this.authService.getLoggedUser();
   }
 
   ngOnInit() {
+    this.currentUser = this.authService.getLoggedUser();
   }
 
   logout() {

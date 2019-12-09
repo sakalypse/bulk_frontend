@@ -20,6 +20,11 @@ export class AppComponent {
       icon: 'home'
     },
     {
+      title: 'Manage categories',
+      url: '/category',
+      icon: 'list'
+    },
+    {
       title: 'List',
       url: '/list',
       icon: 'list'
@@ -45,16 +50,15 @@ export class AppComponent {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
     });
-    let user = await this.authService.getLoggedUser();
-    if(user!=null)
-      this.username = user.id;
-    else
-      this.username = "oui";
   }
 
-  logout() {
+  ngOnInit() {
+  }
+
+  async logout() {
     this.authService.clearStorage();
-    this.route.navigateByUrl('/');
+    await this.route.navigateByUrl('/');
+    window.location.reload();
     this.toastr.success('Successfully logged out', 'Authentification');
   }
 }

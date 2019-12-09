@@ -1,2 +1,3 @@
- npm install
- ng serve --host 0.0.0.0
+npm install
+*change the environment file*
+npm run start

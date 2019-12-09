@@ -38,16 +38,28 @@ export class SignupPage implements OnInit {
       return;
     }
 
-    this.authService.signup(this.userForm.value).subscribe(
-      result => {
-        this.authService.setToken(result.data)
+    this.authService.signup(this.userForm.value)
+    .subscribe(x => {
+      let formLogin = {
+                        username: this.userForm.value.username,
+                        password: this.userForm.value.password
+                      }
+      this.authService.login(formLogin).subscribe(
+        result => {
+          this.authService.setToken(result.access_token)
+        },
+        error => {
+          this.toastr.error(error, 'Authentification Error');
+        },
+        () => {
+          this.toastr.success('Successfully logged in', 'Authentification');
+          this.router.navigateByUrl("/");
+        })
       },
-      error => {
-        this.toastr.error(error, 'Authentification Error');
-      },
-      () => {
-        this.toastr.success('Successfully signed up', 'Authentification');
-        this.router.navigateByUrl("/");
-      })
+      error =>
+      {
+        this.toastr.error(error, error);
+      }
+    );
   }
 }
