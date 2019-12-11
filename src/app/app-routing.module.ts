@@ -27,6 +27,14 @@ const routes: Routes = [
   {
     path: 'category',  canActivate: [AuthGuardService],
     loadChildren: () => import('./category/category.module').then( m => m.CategoryPageModule)
+  },
+  {
+    path: 'game', canActivate: [AuthGuardService],
+    loadChildren: () => import('./game/game.module').then( m => m.GamePageModule)
+  },
+  {
+    path: 'pre-game', canActivate: [AuthGuardService],
+    loadChildren: () => import('./pre-game/pre-game.module').then( m => m.PreGamePageModule)
   }
 ];
 

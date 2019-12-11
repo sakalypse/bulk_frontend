@@ -33,22 +33,58 @@
     </ion-card-content>
   </ion-card>
 
+  <ion-card *ngIf="this.authService.hasToken()" class="create-card">
+    <ion-card-header>
+      <ion-card-title class="ion-text-center">Create a game</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <div class="ion-padding">
+        <form [formGroup]="createForm">
+          <ion-item>
+            <ion-input type="text" placeholder="category"
+            formControlName="category"></ion-input>
+          </ion-item>
+          <ion-item [hidden]="true">
+            <ion-input type="hidden" value="create"
+            formControlName="createOrJoin"></ion-input>
+          </ion-item>
+          <div class="ion-padding">
+            <ion-button color="secondary" size="large" href="/pre-game" expand="block">Host</ion-button>
+          </div>
+        </form>
+			</div>
+    </ion-card-content>
+  </ion-card>
+
+
   <ion-card class="join-card">
     <ion-card-header>
       <ion-card-title class="ion-text-center">Join a game</ion-card-title>
     </ion-card-header>
     <ion-card-content>
       <div class="ion-padding">
+        <form [formGroup]="joinForm">
 				<ion-item>
-					<ion-input type="text" placeholder="Username"></ion-input>
+          <ion-input *ngIf="!this.authService.hasToken()"
+          type="text" placeholder="Username"
+          formControlName="username"></ion-input>
+          <ion-input *ngIf="this.authService.hasToken()"
+          type="text" READONLY
+          value="{{this.authService.getLoggedUser().username}}"
+          formControlName="username"></ion-input>
 				</ion-item>
 				<ion-item>
-					<ion-input type="text" placeholder="Room's code"></ion-input>
+          <ion-input type="text" placeholder="Room's code"
+          formControlName="roomsCode"></ion-input>
         </ion-item>
-        
+        <ion-item [hidden]="true">
+          <ion-input type="hidden" value="join"
+          formControlName="createOrJoin"></ion-input>
+        </ion-item>
         <div class="ion-padding">
-          <ion-button size="large" href="/game" expand="block">Join</ion-button>
+          <ion-button size="large" href="/pre-game" expand="block">Join</ion-button>
         </div>
+        </form>
 			</div>
     </ion-card-content>
   </ion-card>
