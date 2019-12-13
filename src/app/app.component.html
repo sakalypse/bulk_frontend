@@ -1,7 +1,8 @@
 <ion-app>
   <ion-split-pane contentId="main-content">
     <ion-menu contentId="main-content" type="overlay"
-      side="end" *ngIf="this.authService.hasToken()">
+      side="end" *ngIf="this.authService.hasToken()
+      &&!this.authService.hasTokenExpired()">
       <ion-header>
         <ion-toolbar>
           <ion-title>Menu</ion-title>
@@ -18,7 +19,8 @@
               </ion-label>
             </ion-item>
           </ion-menu-toggle>
-          <ion-menu-toggle auto-hide="false" *ngIf="this.authService.hasToken()">
+          <ion-menu-toggle auto-hide="false" *ngIf="this.authService.hasToken()
+          &&!this.authService.hasTokenExpired()">
             <ion-item (click)="logout()" [routerLink]="">
               <ion-icon slot="start" name="log-out"></ion-icon>
               <ion-label>

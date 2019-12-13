@@ -3,7 +3,8 @@
     <ion-title>
       Choice
     </ion-title>
-    <div *ngIf="this.authService.hasToken()" slot="end">
+    <div *ngIf="this.authService.hasToken()
+    &&!this.authService.hasTokenExpired()" slot="end">
       <ion-buttons>
         <ion-menu-button></ion-menu-button>
       </ion-buttons>

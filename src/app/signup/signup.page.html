@@ -4,7 +4,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content (keyup.enter)="signupForm()">
   <form [formGroup]="userForm" padding-right>
     <ion-item>
       <ion-label position="floating">Username</ion-label>

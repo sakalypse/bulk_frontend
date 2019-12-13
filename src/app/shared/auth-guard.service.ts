@@ -12,7 +12,7 @@ export class AuthGuardService implements CanActivate {
 
   canActivate(route: ActivatedRouteSnapshot): boolean {
     let authInfo = {
-      authenticated: this.authService.hasToken()
+      authenticated: (this.authService.hasToken()&&!this.authService.hasTokenExpired())
     };
 
     if (!authInfo.authenticated) {

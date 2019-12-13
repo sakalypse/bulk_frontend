@@ -3,7 +3,9 @@
     <ion-title>
       BULK
     </ion-title>
-    <div *ngIf="!this.authService.hasToken(); else loggedIn" slot="end">
+    <div *ngIf="(!this.authService.hasToken()
+                ||this.authService.hasTokenExpired());
+                 else loggedIn" slot="end">
       <ion-button color="primary" fill="solid" href="/signup">
         Signup
       </ion-button>
@@ -33,7 +35,8 @@
     </ion-card-content>
   </ion-card>
 
-  <ion-card *ngIf="this.authService.hasToken()" class="create-card">
+  <ion-card *ngIf="this.authService.hasToken()
+  &&!this.authService.hasTokenExpired()" class="create-card">
     <ion-card-header>
       <ion-card-title class="ion-text-center">Create a game</ion-card-title>
     </ion-card-header>
@@ -68,7 +71,8 @@
           <ion-input *ngIf="!this.authService.hasToken()"
           type="text" placeholder="Username"
           formControlName="username"></ion-input>
-          <ion-input *ngIf="this.authService.hasToken()"
+          <ion-input *ngIf="this.authService.hasToken()
+          &&!this.authService.hasTokenExpired()"
           type="text" READONLY
           value="{{this.authService.getLoggedUser().username}}"
           formControlName="username"></ion-input>
