@@ -30,8 +30,7 @@
                   <div *ngIf="category.language == 3">German</div>
                 </ion-col>
                 <ion-col>
-                  <div ng-repeat="person in category.questions | filter:query as filtered">
-                  </div>
+                  <div ng-repeat="person in category.questions | filter:query as filtered"></div>
                   {{category.questions.length}} questions
                 </ion-col>
                 <ion-col>
