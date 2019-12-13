@@ -39,7 +39,12 @@ const routes: Routes = [
   {
     path: 'category/question', canActivate: [AuthGuardService],
     loadChildren: () => import('./question/question.module').then( m => m.QuestionPageModule)
+  },
+  {
+    path: 'category/question/choice', canActivate: [AuthGuardService],
+    loadChildren: () => import('./choice/choice.module').then( m => m.ChoicePageModule)
   }
+
 
 ];
 

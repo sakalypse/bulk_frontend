@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import { HttpHeaders, HttpBackend, HttpClient } from '@angular/common/http';
 import { AuthService } from '../shared/auth.service';
 import { environment } from 'src/environments/environment';
@@ -43,6 +43,16 @@ export class QuestionPage implements OnInit {
       result => {
         this.questions = result;
       });
+  }
+
+  editChoices(id)
+  {
+    let navigationExtras: NavigationExtras = {
+      state : {
+        questionId: id
+      }
+    };
+    this.router.navigate(['category/question/choice'], navigationExtras);
   }
 
 }
