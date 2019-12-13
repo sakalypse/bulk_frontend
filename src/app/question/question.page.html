@@ -20,10 +20,13 @@
                   {{question.question}}
                 </ion-col>
                 <ion-col>
-                  {{question.hasChoices}}
+                  <div *ngIf="question.hasChoices == false;then withoutChoices else withChoices"></div>
+                  <ng-template #withoutChoices>Choices disabled</ng-template>
+                  <ng-template #withChoices>Choices enabled</ng-template>
                 </ion-col>
                 <ion-col>
-                  choices count
+                  <div ng-repeat="item in question.choices | filter:query as filtered"></div>
+                  {{question.choices.length}} choices
                 </ion-col>
                 <ion-col>
                   <ion-button color="primary" fill="solid" (click)="editChoices(question.questionId)">Edit choices</ion-button>
