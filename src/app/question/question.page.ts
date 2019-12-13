@@ -55,4 +55,8 @@ export class QuestionPage implements OnInit {
     this.router.navigate(['category/question/choice'], navigationExtras);
   }
 
+  addQuestion()
+  {
+    
+  }
 }

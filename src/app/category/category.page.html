@@ -20,13 +20,19 @@
                   {{category.name}}
                 </ion-col>
                 <ion-col>
-                  {{category.isPublic}}
+                  <div *ngIf="category.isPublic == false;then private else public"></div>
+                  <ng-template #private>Private</ng-template>
+                  <ng-template #public>Public</ng-template>
                 </ion-col>
                 <ion-col>
-                  {{category.language}}
+                  <div *ngIf="category.language == 1">English</div>
+                  <div *ngIf="category.language == 2">French</div>
+                  <div *ngIf="category.language == 3">German</div>
                 </ion-col>
                 <ion-col>
-                  questions count
+                  <div ng-repeat="person in category.questions | filter:query as filtered">
+                  </div>
+                  {{category.questions.length}} questions
                 </ion-col>
                 <ion-col>
                   <ion-button color="primary" fill="solid" (click)="editQuestions(category.categoryId)">Edit questions</ion-button>
@@ -35,4 +41,5 @@
             </ion-grid>
       </ion-card-content>
     </ion-card>
+    <ion-button color="success" fill="solid" (click)="addCategory()">New category</ion-button>
 </ion-content>
