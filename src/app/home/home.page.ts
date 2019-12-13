@@ -3,6 +3,11 @@ import { AuthService } from '../shared/auth.service';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { HttpClient, HttpErrorResponse, HttpBackend } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
+import { Observable, throwError } from 'rxjs';
+import { catchError } from "rxjs/internal/operators";
+
 
 @Component({
   selector: 'app-home',
@@ -10,7 +15,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
   styleUrls: ['home.page.scss'],
 })
 export class HomePage implements OnInit{
-
+  private API_URL = environment.API_URL_DEV;
   currentUser: any;
 
   private createForm: FormGroup;
@@ -25,7 +30,10 @@ export class HomePage implements OnInit{
     @Inject(AuthService)
     private authService: AuthService,
     private toastr: ToastrService,
+    private handler: HttpBackend, 
+    private http: HttpClient,
     private route: Router) {
+      this.http = new HttpClient(handler);
   }
 
   ngOnInit() {
@@ -46,6 +54,29 @@ export class HomePage implements OnInit{
       roomsCode: this.roomsCode,
       createOrJoin: this.createOrJoin
     });
+  }
+
+  createSession() {
+    if (this.createForm.invalid) {
+      return;
+    }
+    let data = {
+      category: this.createForm.value.category,
+      user: [this.createForm.value.username]
+    }
+    this.http.post<any>(`${this.API_URL}/session/create`, data).
+    subscribe(
+      result => {
+        localStorage.setItem('sessionId', JSON.stringify(result.data.sessionId));
+      },
+      error => {
+        this.toastr.error(error, 'Creation session error');
+      },
+      () => {
+        this.toastr.success('Session successfully created', 'Session');
+        this.route.navigateByUrl("/pre-game");
+      }
+    );
   }
 
   logout() {
