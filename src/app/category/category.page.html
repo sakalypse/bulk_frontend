@@ -20,10 +20,16 @@
                   {{category.name}}
                 </ion-col>
                 <ion-col>
+                  {{category.isPublic}}
+                </ion-col>
+                <ion-col>
+                  {{category.language}}
+                </ion-col>
+                <ion-col>
                   questions count
                 </ion-col>
                 <ion-col>
-                  <ion-button color="primary">Edit questions</ion-button>
+                  <ion-button color="primary" fill="solid" href="/category/{{category.categoryId}}/questions">Edit questions</ion-button>
                 </ion-col>
               </ion-row>
             </ion-grid>

@@ -33,8 +33,8 @@ export class CategoryPage implements OnInit {
     };
 
     let userId = this.authService.getLoggedUser().userid;
-    let categoriesQuery = this.http.get(`${this.API_URL}/user/${userId}/categories`, httpOptions);
-    categoriesQuery.subscribe(
+    let userCategories = this.http.get(`${this.API_URL}/user/${userId}/categories`, httpOptions);
+    userCategories.subscribe(
       result => {
         this.categories = result;
       });
