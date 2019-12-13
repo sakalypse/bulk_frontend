@@ -3,6 +3,7 @@ import { AuthService } from '../shared/auth.service';
 import { environment } from 'src/environments/environment';
 import { HttpClient, HttpBackend, HttpHeaders } from '@angular/common/http';
 import { Storage } from '@ionic/storage';
+import { NavigationExtras, Router } from '@angular/router';
 
 
 @Component({
@@ -20,7 +21,8 @@ export class CategoryPage implements OnInit {
     private authService: AuthService,
     handler: HttpBackend, 
     private http: HttpClient,
-    public storage: Storage) {
+    public storage: Storage,
+    private router: Router) {
     this.http = new HttpClient(handler);
   }
 
@@ -38,5 +40,15 @@ export class CategoryPage implements OnInit {
       result => {
         this.categories = result;
       });
+  }
+
+  editQuestions(id)
+  {
+    let navigationExtras: NavigationExtras = {
+      state : {
+        categoryId: id
+      }
+    };
+    this.router.navigate(['category/question'], navigationExtras);
   }
 }

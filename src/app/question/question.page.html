@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar>
     <ion-title>
-      Category
+      Question
     </ion-title>
     <div *ngIf="this.authService.hasToken()" slot="end">
       <ion-buttons>
@@ -12,24 +12,18 @@
 </ion-header>
 
 <ion-content>
-  <ion-card *ngFor="let category of categories">
+  <ion-card *ngFor="let question of questions">
       <ion-card-content>
           <ion-grid>
               <ion-row>
                 <ion-col>
-                  {{category.name}}
+                  {{question.question}}
                 </ion-col>
                 <ion-col>
-                  {{category.isPublic}}
+                  choices count
                 </ion-col>
                 <ion-col>
-                  {{category.language}}
-                </ion-col>
-                <ion-col>
-                  questions count
-                </ion-col>
-                <ion-col>
-                  <ion-button color="primary" fill="solid" (click)="editQuestions(category.categoryId)">Edit questions</ion-button>
+                  <ion-button color="primary" fill="solid">Edit choices</ion-button>
                 </ion-col>
               </ion-row>
             </ion-grid>

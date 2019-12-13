@@ -35,7 +35,12 @@ const routes: Routes = [
   {
     path: 'pre-game', canActivate: [AuthGuardService],
     loadChildren: () => import('./pre-game/pre-game.module').then( m => m.PreGamePageModule)
+  },
+  {
+    path: 'category/question', canActivate: [AuthGuardService],
+    loadChildren: () => import('./question/question.module').then( m => m.QuestionPageModule)
   }
+
 ];
 
 @NgModule({
