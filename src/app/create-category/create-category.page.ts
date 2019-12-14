@@ -22,7 +22,7 @@ export class CreateCategoryPage implements OnInit {
     private router: Router) { }
 
   ngOnInit() {
-    this.name = new FormControl('', [Validators.required, Validators.minLength(6)]);
+    this.name = new FormControl('', [Validators.required, Validators.minLength(6), Validators.maxLength(50)]);
     this.isPublic = new FormControl('', [Validators.required]);
     this.language = new FormControl('', [Validators.required]);
     this.categoryForm = new FormGroup({
