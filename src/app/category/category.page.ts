@@ -54,6 +54,6 @@ export class CategoryPage implements OnInit {
 
   addCategory()
   {
-    
+    this.router.navigate(['category/create']);
   }
 }

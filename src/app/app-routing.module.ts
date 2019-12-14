@@ -44,7 +44,10 @@ const routes: Routes = [
     path: 'category/question/choice', canActivate: [AuthGuardService],
     loadChildren: () => import('./choice/choice.module').then( m => m.ChoicePageModule)
   },
-  
+  {
+    path: 'category/create',
+    loadChildren: () => import('./create-category/create-category.module').then( m => m.CreateCategoryPageModule)
+  },
   
   {path: '**', redirectTo: '/home'}
 ];
