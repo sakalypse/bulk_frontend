@@ -24,8 +24,8 @@
     </ion-item>
 
     <ion-item>
-      <ion-label>Private</ion-label>
-      <ion-toggle checked="false" color="primary" formControlName="isPublic"></ion-toggle>
+      <ion-label>Public</ion-label>
+      <ion-toggle checked="true" color="primary" formControlName="isPublic"></ion-toggle>
     </ion-item>
 
     <ion-item>
@@ -42,6 +42,6 @@
       expand="block" 
       [disabled]="!categoryForm.valid" 
       (click)="categoryCreationForm()">Create</ion-button>
-</form>
+  </form>
 </ion-content>
 
