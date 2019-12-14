@@ -44,8 +44,12 @@
       <div class="ion-padding">
         <form [formGroup]="createForm">
           <ion-item>
-            <ion-input type="text" placeholder="category"
-            formControlName="category"></ion-input>
+            <ion-label>Category</ion-label>
+            <ion-select placeholder="Select a category"
+                        formControlName="category">
+              <ion-select-option *ngFor="let category of categories"
+              value="{{category.name}}">{{category.name}}</ion-select-option>
+            </ion-select>
           </ion-item>
           <ion-item [hidden]="true">
             <ion-input type="hidden" value="create"
@@ -68,7 +72,8 @@
       <div class="ion-padding">
         <form [formGroup]="joinForm">
 				<ion-item>
-          <ion-input *ngIf="!this.authService.hasToken()"
+          <ion-input *ngIf="!this.authService.hasToken()
+          ||this.authService.hasTokenExpired()"
           type="text" placeholder="Username"
           formControlName="username"></ion-input>
           <ion-input *ngIf="this.authService.hasToken()

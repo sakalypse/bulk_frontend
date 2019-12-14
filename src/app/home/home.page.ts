@@ -3,7 +3,7 @@ import { AuthService } from '../shared/auth.service';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { HttpClient, HttpErrorResponse, HttpBackend } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpBackend, HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from "rxjs/internal/operators";
@@ -26,6 +26,8 @@ export class HomePage implements OnInit{
   private username: FormControl;
   private roomsCode: FormControl;
 
+  private categories;
+
   constructor(
     @Inject(AuthService)
     private authService: AuthService,
@@ -41,7 +43,6 @@ export class HomePage implements OnInit{
 
     //init control for form
     this.createOrJoin = new FormControl('', Validators.required);
-
     this.category = new FormControl('', Validators.required);
     this.createForm = new FormGroup({
       category: this.category,
@@ -54,6 +55,25 @@ export class HomePage implements OnInit{
       roomsCode: this.roomsCode,
       createOrJoin: this.createOrJoin
     });
+
+    
+    //fetch categories for
+    if(this.authService.hasToken()&&!this.authService.hasTokenExpired()){
+      const httpOptions = {
+        headers: new HttpHeaders({
+          'Content-Type':  'application/json',
+          'Authorization': 'Bearer ' + this.authService.getToken()
+        })
+      };
+  
+      let userId = this.authService.getLoggedUser().userid;
+      console.log("Oui"+userId);
+      let userCategories = this.http.get(`${this.API_URL}/user/${userId}/categories`, httpOptions);
+      userCategories.subscribe(
+        result => {
+          this.categories = result;
+        });
+    }
   }
 
   createSession() {
