@@ -1,10 +1,11 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { AuthService } from '../shared/auth.service';
-import { ToastrService } from 'ngx-toastr';
-import { Router } from '@angular/router';
 import { FormControl, Validators, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { HttpBackend, HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { Storage } from '@ionic/storage';
+import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-create-category',
@@ -26,10 +27,11 @@ export class CreateCategoryPage implements OnInit {
     private authService: AuthService,
     handler: HttpBackend,
     private http: HttpClient,
+    public storage: Storage,
     private toastr: ToastrService,
     private router: Router) {
       this.http = new HttpClient(handler);
-    }
+  }
 
   ngOnInit() {
     this.name = new FormControl('', [Validators.required, Validators.minLength(6), Validators.maxLength(50)]);
