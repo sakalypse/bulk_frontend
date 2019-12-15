@@ -40,6 +40,9 @@
               },
               {
                 "input": "node_modules/ngx-toastr/toastr.css"
+              },
+              {
+                "input": "node_modules/ionicons/dist/scss/ionicons.scss"
               }
             ],
             "scripts": []

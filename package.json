@@ -33,6 +33,7 @@
     "cordova-android": "8.1.0",
     "cordova-sqlite-storage": "^3.4.1",
     "core-js": "^2.5.4",
+    "ionicons": "^4.6.3",
     "ngx-toastr": "^11.2.1",
     "rxjs": "~6.5.1",
     "save": "^2.4.0",

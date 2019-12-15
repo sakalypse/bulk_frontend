@@ -32,6 +32,11 @@
                 <ion-col>
                   <ion-button color="primary" fill="solid" (click)="editChoices(question.questionId)">Edit choices</ion-button>
                 </ion-col>
+                <ion-col>
+                  <ion-button color="danger" fill="solid" (click)="deleteQuestion(question.questionId)">
+                    <ion-icon slot="icon-only" name="trash"></ion-icon>
+                  </ion-button>
+                </ion-col>
               </ion-row>
             </ion-grid>
       </ion-card-content>

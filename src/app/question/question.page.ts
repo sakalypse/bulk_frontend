@@ -59,4 +59,9 @@ export class QuestionPage implements OnInit {
   {
     
   }
+
+  deleteQuestion(id)
+  {
+    
+  }
 }

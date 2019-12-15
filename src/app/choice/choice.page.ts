@@ -45,4 +45,14 @@ export class ChoicePage implements OnInit {
       });
   }
 
+  addChoice()
+  {
+
+  }
+
+
+  deleteChoice(id)
+  {
+    
+  }
 }

@@ -56,4 +56,9 @@ export class CategoryPage implements OnInit {
   {
     this.router.navigate(['category/create']);
   }
+
+  deleteCategory(id)
+  {
+
+  }
 }

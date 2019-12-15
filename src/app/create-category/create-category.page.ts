@@ -5,8 +5,6 @@ import { Router } from '@angular/router';
 import { FormControl, Validators, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { HttpBackend, HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
-import { catchError } from 'rxjs/internal/operators';
-import { throwError, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-create-category',
@@ -52,16 +50,12 @@ export class CreateCategoryPage implements OnInit {
       return;
     }
 
-    console.log(this.categoryForm.value);
-
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type':  'application/json',
         'Authorization': 'Bearer ' + this.authService.getToken()
       })
     };
-    
-    //x-www-form-urlencoded
 
     this.http.post<any>(`${this.API_URL}/category/create`, this.categoryForm.value, httpOptions)
     .subscribe(
@@ -73,7 +67,5 @@ export class CreateCategoryPage implements OnInit {
         this.toastr.success('Category successfully created', 'Category creation');
         this.router.navigateByUrl("/category");
       });
-
-    //THEN GO BACK TO CATEGORIES
   }
 }
