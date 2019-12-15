@@ -67,7 +67,6 @@ export class HomePage implements OnInit{
       };
   
       let userId = this.authService.getLoggedUser().userid;
-      console.log("Oui"+userId);
       let userCategories = this.http.get(`${this.API_URL}/user/${userId}/categories`, httpOptions);
       userCategories.subscribe(
         result => {

@@ -10,7 +10,7 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
-import { HttpBackend, HttpClientModule, HttpClient } from '@angular/common/http';
+import { HttpBackend, HttpClientModule, HttpClient, HttpHandler } from '@angular/common/http';
 import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
@@ -24,7 +24,7 @@ import { ToastrModule } from 'ngx-toastr';
     ToastrModule.forRoot(),
     IonicModule.forRoot(),
     IonicStorageModule.forRoot(),
-    AppRoutingModule
+    AppRoutingModule,
   ],
   providers: [
     StatusBar,

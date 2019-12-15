@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { CreateCategoryPageRoutingModule } from './create-category-routing.module';
 
 import { CreateCategoryPage } from './create-category.page';
+import { HttpClientModule, HttpClient } from '@angular/common/http';
 
 @NgModule({
   imports: [
