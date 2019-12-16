@@ -2,11 +2,10 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { AuthService } from '../shared/auth.service';
 import { HttpBackend, HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Storage } from '@ionic/storage';
-import { NavigationExtras, Router } from '@angular/router';
+import { Router, NavigationExtras } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { ToastrService } from 'ngx-toastr';
 import { AlertController } from '@ionic/angular';
-
 
 @Component({
   selector: 'app-category',
@@ -101,7 +100,7 @@ export class CategoryPage implements OnInit {
       })
     };
     
-    this.http.delete<any>(`${this.API_URL}/category/${id}`, httpOptions)
+    this.http.delete<any>(`${this.API_URL}/category/delete/${id}`, httpOptions)
     .subscribe(
       (result) => {},
       (error) => {
@@ -110,6 +109,7 @@ export class CategoryPage implements OnInit {
       () => {
         this.toastr.success('Category successfully deleted', 'Category deletion');
         this.router.navigateByUrl("/category");
+        window.location.reload();
       });
   }
 }

@@ -98,10 +98,4 @@ export class HomePage implements OnInit{
     );
   }
 
-  logout() {
-    this.authService.clearStorage();
-    this.route.navigateByUrl('/');
-    this.toastr.success('Successfully logged out', 'Authentification');
-  }
-
 }
