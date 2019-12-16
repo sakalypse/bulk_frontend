@@ -26,9 +26,9 @@
                   <ng-template #public>Public</ng-template>
                 </ion-col>
                 <ion-col>
-                  <div *ngIf="category.language == 1">English</div>
-                  <div *ngIf="category.language == 2">French</div>
-                  <div *ngIf="category.language == 3">German</div>
+                  <div *ngIf="category.language == 0">English</div>
+                  <div *ngIf="category.language == 1">French</div>
+                  <div *ngIf="category.language == 2">German</div>
                 </ion-col>
                 <ion-col>
                   <div ng-repeat="item in category.questions | filter:query as filtered"></div>

@@ -36,7 +36,7 @@ export class CreateCategoryPage implements OnInit {
   ngOnInit() {
     this.name = new FormControl('', [Validators.required, Validators.minLength(6), Validators.maxLength(50)]);
     this.isPublic = new FormControl(true);
-    this.language = new FormControl(1);
+    this.language = new FormControl(0);
     this.owner = new FormControl(this.authService.getLoggedUser().userid);
     this.categoryForm = new FormGroup({
       name: this.name,
@@ -58,7 +58,7 @@ export class CreateCategoryPage implements OnInit {
         'Authorization': 'Bearer ' + this.authService.getToken()
       })
     };
-
+    
     this.http.post<any>(`${this.API_URL}/category/create`, this.categoryForm.value, httpOptions)
     .subscribe(
       (result) => {},
@@ -68,6 +68,7 @@ export class CreateCategoryPage implements OnInit {
       () => {
         this.toastr.success('Category successfully created', 'Category creation');
         this.router.navigateByUrl("/category");
+        window.location.reload();
       });
   }
 }
