@@ -1,0 +1,30 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Create choice</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content (keyup.enter)="choiceCreationForm()">
+  <form [formGroup]="choiceForm" padding-right>
+    <ion-item>
+      <ion-label position="floating">Choice</ion-label>
+      <ion-input type="text" formControlName="choice" required></ion-input>
+      <div *ngIf="choice.invalid && (choice.dirty || choice.touched)"
+            class="alert alert-danger p-2">
+        <div *ngIf="choice.errors.required">
+          Choice is required.
+        </div>
+        <div *ngIf="choice.hasError('maxlength')">
+          Can't be longer than 100 characters.
+        </div>
+      </div>
+    </ion-item>
+
+    <ion-button 
+      color="primary" 
+      expand="block" 
+      [disabled]="!choiceForm.valid" 
+      (click)="choiceCreationForm()">Create</ion-button>
+  </form>
+</ion-content>
+

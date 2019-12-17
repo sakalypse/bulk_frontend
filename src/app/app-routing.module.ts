@@ -49,10 +49,14 @@ const routes: Routes = [
     loadChildren: () => import('./create-category/create-category.module').then( m => m.CreateCategoryPageModule)
   },
   {
-    path: 'question/create',
+    path: 'category/question/create',
     loadChildren: () => import('./create-question/create-question.module').then( m => m.CreateQuestionPageModule)
   },
-  {path: '**', redirectTo: '/home'}
+  {
+    path: 'category/question/choice/create',
+    loadChildren: () => import('./create-choice/create-choice.module').then( m => m.CreateChoicePageModule)
+  },
+  {path: '**', redirectTo: '/home'},
 ];
 
 @NgModule({

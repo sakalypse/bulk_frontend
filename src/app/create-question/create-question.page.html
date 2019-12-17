@@ -12,7 +12,7 @@
       <div *ngIf="question.invalid && (question.dirty || question.touched)"
             class="alert alert-danger p-2">
         <div *ngIf="question.errors.required">
-          Name is required.
+          Question is required.
         </div>
         <div *ngIf="question.hasError('minlength')">
           Must be at least 6 characters.

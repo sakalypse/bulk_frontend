@@ -2,7 +2,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { AuthService } from '../shared/auth.service';
 import { HttpBackend, HttpClient, HttpHeaders } from '@angular/common/http';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 
 @Component({
   selector: 'app-choice',
@@ -31,6 +31,11 @@ export class ChoicePage implements OnInit {
   }
 
   ngOnInit() {
+    if (this.questionId == undefined)
+    {
+      this.router.navigateByUrl("/category/question");
+    }
+
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type':  'application/json',
@@ -47,11 +52,21 @@ export class ChoicePage implements OnInit {
 
   addChoice()
   {
-
+    let navigationExtras: NavigationExtras = {
+      state : {
+        questionId: this.questionId
+      }
+    };
+    this.router.navigateByUrl("category/question/choice/create", navigationExtras);
   }
 
 
   deleteChoice(id)
+  {
+    
+  }
+
+  editChoice(id)
   {
     
   }
