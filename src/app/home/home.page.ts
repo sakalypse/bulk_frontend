@@ -19,7 +19,7 @@ export class HomePage implements OnInit{
   currentUser: any;
 
   private createForm: FormGroup;
-  private category: FormControl;
+  private categoryId: FormControl;
   private createOrJoin: FormControl;
 
   private joinForm: FormGroup;
@@ -42,22 +42,19 @@ export class HomePage implements OnInit{
     this.currentUser = this.authService.getLoggedUser();
 
     //init control for form
-    this.createOrJoin = new FormControl('', Validators.required);
-    this.category = new FormControl('', Validators.required);
+    this.categoryId = new FormControl('', Validators.required);
     this.createForm = new FormGroup({
-      category: this.category,
-      createOrJoin: this.createOrJoin
+      categoryId: this.categoryId
     });
     this.username = new FormControl('', Validators.required);
     this.roomsCode = new FormControl('', Validators.required);
     this.joinForm = new FormGroup({
       username: this.username,
-      roomsCode: this.roomsCode,
-      createOrJoin: this.createOrJoin
+      roomsCode: this.roomsCode
     });
 
     
-    //fetch categories for
+    //fetch categories for "host"
     if(this.authService.hasToken()&&!this.authService.hasTokenExpired()){
       const httpOptions = {
         headers: new HttpHeaders({
@@ -80,13 +77,13 @@ export class HomePage implements OnInit{
       return;
     }
     let data = {
-      category: this.createForm.value.category,
-      user: [this.createForm.value.username]
+      category: this.createForm.value.categoryId,
+      owner: this.authService.getLoggedUser().userid
     }
     this.http.post<any>(`${this.API_URL}/session/create`, data).
     subscribe(
       result => {
-        localStorage.setItem('sessionId', JSON.stringify(result.data.sessionId));
+        localStorage.setItem('sessionId', JSON.stringify(result.sessionId));
       },
       error => {
         this.toastr.error(error, 'Creation session error');

@@ -46,17 +46,14 @@
           <ion-item>
             <ion-label>Category</ion-label>
             <ion-select placeholder="Select a category"
-                        formControlName="category">
+                        formControlName="categoryId">
               <ion-select-option *ngFor="let category of categories"
-              value="{{category.name}}">{{category.name}}</ion-select-option>
+              value="{{category.categoryId}}">{{category.name}}</ion-select-option>
             </ion-select>
           </ion-item>
-          <ion-item [hidden]="true">
-            <ion-input type="hidden" value="create"
-            formControlName="createOrJoin"></ion-input>
-          </ion-item>
           <div class="ion-padding">
-            <ion-button color="secondary" size="large" href="/pre-game" expand="block">Host</ion-button>
+            <ion-button color="secondary" size="large"
+            (click)="createSession()" expand="block">Host</ion-button>
           </div>
         </form>
 			</div>
@@ -85,10 +82,6 @@
 				<ion-item>
           <ion-input type="text" placeholder="Room's code"
           formControlName="roomsCode"></ion-input>
-        </ion-item>
-        <ion-item [hidden]="true">
-          <ion-input type="hidden" value="join"
-          formControlName="createOrJoin"></ion-input>
         </ion-item>
         <div class="ion-padding">
           <ion-button size="large" href="/pre-game" expand="block">Join</ion-button>
