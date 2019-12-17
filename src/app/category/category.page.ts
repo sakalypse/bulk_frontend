@@ -60,32 +60,6 @@ export class CategoryPage implements OnInit {
     this.router.navigate(['category/create']);
   }
 
-  async warn() {
-    return new Promise(async (resolve) => {
-      const confirm = await this.alertController.create({
-        header: 'Category deletion',
-        message: 'Are you sure that you want to delete this category and all its questions ?',
-        buttons: [
-          {
-            text: 'Cancel',
-            role: 'cancel',
-            handler: () => {
-              return resolve(false);
-            },
-          },
-          {
-            text: 'Yes',
-            handler: () => {
-              return resolve(true);
-            },
-          },
-        ],
-      });
-
-      await confirm.present();
-    });
-  }
-
   async deleteCategory(id, index)
   {
     // show the user a confirm alert.
@@ -110,5 +84,36 @@ export class CategoryPage implements OnInit {
         this.toastr.success('Category successfully deleted', 'Category deletion');
         this.ngOnInit();
       });
+  }
+
+  editCategory(id)
+  {
+
+  }
+
+  async warn() {
+    return new Promise(async (resolve) => {
+      const confirm = await this.alertController.create({
+        header: 'Category deletion',
+        message: 'Are you sure that you want to delete this category and all its questions ?',
+        buttons: [
+          {
+            text: 'Cancel',
+            role: 'cancel',
+            handler: () => {
+              return resolve(false);
+            },
+          },
+          {
+            text: 'Yes',
+            handler: () => {
+              return resolve(true);
+            },
+          },
+        ],
+      });
+
+      await confirm.present();
+    });
   }
 }
