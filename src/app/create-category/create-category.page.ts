@@ -68,7 +68,7 @@ export class CreateCategoryPage implements OnInit {
       () => {
         this.toastr.success('Category successfully created', 'Category creation');
         this.router.navigateByUrl("/category");
-        window.location.reload();
+        //window.location.reload();
       });
   }
 }

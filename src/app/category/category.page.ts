@@ -86,7 +86,7 @@ export class CategoryPage implements OnInit {
     });
   }
 
-  async deleteCategory(id)
+  async deleteCategory(id, index)
   {
     // show the user a confirm alert.
     const confirmation = await this.warn();
@@ -108,8 +108,7 @@ export class CategoryPage implements OnInit {
       },
       () => {
         this.toastr.success('Category successfully deleted', 'Category deletion');
-        this.router.navigateByUrl("/category");
-        window.location.reload();
+        this.ngOnInit();
       });
   }
 }

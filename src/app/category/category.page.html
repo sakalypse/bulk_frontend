@@ -33,13 +33,14 @@
                 <ion-col>
                   <div ng-repeat="item in category.questions | filter:query as filtered"></div>
                   {{category.questions.length}} questions
-                </ion-col>
-                <ion-col>
                   <ion-button color="primary" fill="solid" (click)="editQuestions(category.categoryId)">Edit questions</ion-button>
                 </ion-col>
                 <ion-col>
                   <ion-button color="danger" fill="solid" (click)="deleteCategory(category.categoryId)">
                     <ion-icon slot="icon-only" name="trash"></ion-icon>
+                  </ion-button>
+                  <ion-button color="primary" fill="solid" (click)="editCategory(category.categoryId)">
+                    <ion-icon slot="icon-only" name="create"></ion-icon>
                   </ion-button>
                 </ion-col>
               </ion-row>
