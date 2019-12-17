@@ -77,14 +77,14 @@
           &&!this.authService.hasTokenExpired()"
           type="text" READONLY
           value="{{this.authService.getLoggedUser().username}}"
-          formControlName="username"></ion-input>
+          formControlName="usernameLogged"></ion-input>
 				</ion-item>
 				<ion-item>
           <ion-input type="text" placeholder="Room's code"
           formControlName="roomsCode"></ion-input>
         </ion-item>
         <div class="ion-padding">
-          <ion-button size="large" href="/pre-game" expand="block">Join</ion-button>
+          <ion-button size="large" (click)="joinSession()" expand="block">Join</ion-button>
         </div>
         </form>
 			</div>

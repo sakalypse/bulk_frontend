@@ -38,8 +38,6 @@ export class PreGamePage implements OnInit {
     user.subscribe(
       result => {
         this.sessionId = result.session.sessionId;
-        console.log('session :'+this.sessionId);
-
       });
   }
 

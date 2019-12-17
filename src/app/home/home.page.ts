@@ -7,7 +7,7 @@ import { HttpClient, HttpErrorResponse, HttpBackend, HttpHeaders } from '@angula
 import { environment } from 'src/environments/environment';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from "rxjs/internal/operators";
-
+import { Socket } from 'ngx-socket-io';
 
 @Component({
   selector: 'app-home',
@@ -24,6 +24,7 @@ export class HomePage implements OnInit{
 
   private joinForm: FormGroup;
   private username: FormControl;
+  private usernameLogged: FormControl;
   private roomsCode: FormControl;
 
   private categories;
@@ -34,7 +35,8 @@ export class HomePage implements OnInit{
     private toastr: ToastrService,
     private handler: HttpBackend, 
     private http: HttpClient,
-    private route: Router) {
+    private route: Router,
+    private socket: Socket) {
       this.http = new HttpClient(handler);
   }
 
@@ -47,11 +49,20 @@ export class HomePage implements OnInit{
       categoryId: this.categoryId
     });
     this.username = new FormControl('', Validators.required);
+    this.usernameLogged = new FormControl('');
     this.roomsCode = new FormControl('', Validators.required);
-    this.joinForm = new FormGroup({
-      username: this.username,
-      roomsCode: this.roomsCode
-    });
+    if(this.authService.hasToken()&&!this.authService.hasTokenExpired()){
+      this.joinForm = new FormGroup({
+        usernameLogged: this.usernameLogged,
+        roomsCode: this.roomsCode
+      });
+    }
+    else{
+      this.joinForm = new FormGroup({
+        username: this.username,
+        roomsCode: this.roomsCode
+      });
+    }
 
     
     //fetch categories for "host"
@@ -93,6 +104,33 @@ export class HomePage implements OnInit{
         this.route.navigateByUrl("/pre-game");
       }
     );
+  }
+
+  async joinSession(){
+    if (this.joinForm.invalid) {
+      return;
+    }
+
+    let data = {
+      username: this.joinForm.value.username,
+      roomsCode: this.joinForm.value.roomsCode
+    }
+
+    //if user not exist, create it
+    const userid=this.authService.getLoggedUser().userid;
+    if(!userid){
+      //TODO
+      //create user and apply id to 'userid'
+    }
+
+    //send
+    await this.socket.
+              emit('joinSession', userid, data.roomsCode);
+    this.toastr.success('Session successfully joined', 'Session');
+    this.route.navigateByUrl("/pre-game")
+    
+    //receive
+    //return this.socket.fromEvent('chat');
   }
 
 }
