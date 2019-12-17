@@ -28,13 +28,14 @@
                 <ion-col>
                   <div ng-repeat="item in question.choices | filter:query as filtered"></div>
                   {{question.choices.length}} choices
-                </ion-col>
-                <ion-col>
-                  <ion-button color="primary" fill="solid" (click)="editChoices(question.questionId)">Edit choices</ion-button>
+                  <ion-button *ngIf="question.hasChoices == true" color="primary" fill="solid" (click)="editChoices(question.questionId)">Edit choices</ion-button>
                 </ion-col>
                 <ion-col>
                   <ion-button color="danger" fill="solid" (click)="deleteQuestion(question.questionId)">
                     <ion-icon slot="icon-only" name="trash"></ion-icon>
+                  </ion-button>
+                  <ion-button color="primary" fill="solid" (click)="editQuestion(question.questionId)">
+                    <ion-icon slot="icon-only" name="create"></ion-icon>
                   </ion-button>
                 </ion-col>
               </ion-row>

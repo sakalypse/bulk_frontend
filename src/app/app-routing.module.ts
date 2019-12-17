@@ -48,7 +48,10 @@ const routes: Routes = [
     path: 'category/create',
     loadChildren: () => import('./create-category/create-category.module').then( m => m.CreateCategoryPageModule)
   },
-  
+  {
+    path: 'question/create',
+    loadChildren: () => import('./create-question/create-question.module').then( m => m.CreateQuestionPageModule)
+  },
   {path: '**', redirectTo: '/home'}
 ];
 

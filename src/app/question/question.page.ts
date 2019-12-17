@@ -31,6 +31,11 @@ export class QuestionPage implements OnInit {
   }
 
   ngOnInit() {
+    if (this.categoryId == undefined)
+    {
+      this.router.navigateByUrl("/category");
+    }
+
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type':  'application/json',
@@ -57,7 +62,12 @@ export class QuestionPage implements OnInit {
 
   addQuestion()
   {
-    
+    let navigationExtras: NavigationExtras = {
+      state : {
+        categoryId: this.categoryId
+      }
+    };
+    this.router.navigate(['question/create'], navigationExtras);
   }
 
   deleteQuestion(id)
