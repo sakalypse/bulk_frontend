@@ -2,7 +2,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { AuthService } from '../shared/auth.service';
 import { HttpBackend, HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Storage } from '@ionic/storage';
-import { Router, NavigationExtras } from '@angular/router';
+import { Router, NavigationExtras, ActivatedRoute } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { ToastrService } from 'ngx-toastr';
 import { AlertController } from '@ionic/angular';
@@ -24,6 +24,7 @@ export class CategoryPage implements OnInit {
     private http: HttpClient,
     public storage: Storage,
     private toastr: ToastrService,
+    private route: ActivatedRoute,
     private router: Router,
     private alertController:AlertController) {
       this.http = new HttpClient(handler);
@@ -38,8 +39,8 @@ export class CategoryPage implements OnInit {
     };
 
     let userId = this.authService.getLoggedUser().userid;
-    let userCategories = this.http.get(`${this.API_URL}/user/${userId}/categories`, httpOptions);
-    userCategories.subscribe(
+    this.http.get(`${this.API_URL}/user/${userId}/categories`, httpOptions)
+    .subscribe(
       result => {
         this.categories = result;
       });
@@ -88,7 +89,12 @@ export class CategoryPage implements OnInit {
 
   editCategory(id)
   {
-
+    let navigationExtras: NavigationExtras = {
+      state : {
+        categoryId: id
+      }
+    };
+    this.router.navigate(['category/edit'], navigationExtras);
   }
 
   async warn() {

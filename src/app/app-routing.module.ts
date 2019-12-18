@@ -45,18 +45,22 @@ const routes: Routes = [
     loadChildren: () => import('./choice/choice.module').then( m => m.ChoicePageModule)
   },
   {
-    path: 'category/create',
+    path: 'category/create', canActivate: [AuthGuardService],
     loadChildren: () => import('./create-category/create-category.module').then( m => m.CreateCategoryPageModule)
   },
   {
-    path: 'category/question/create',
+    path: 'category/question/create', canActivate: [AuthGuardService],
     loadChildren: () => import('./create-question/create-question.module').then( m => m.CreateQuestionPageModule)
   },
   {
-    path: 'category/question/choice/create',
+    path: 'category/question/choice/create', canActivate: [AuthGuardService],
     loadChildren: () => import('./create-choice/create-choice.module').then( m => m.CreateChoicePageModule)
   },
-  {path: '**', redirectTo: '/home'},
+  {
+    path: 'category/edit', canActivate: [AuthGuardService],
+    loadChildren: () => import('./edit-category/edit-category.module').then( m => m.EditCategoryPageModule)
+  },
+  {path: '**', redirectTo: '/home'}
 ];
 
 @NgModule({
