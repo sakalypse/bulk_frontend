@@ -49,11 +49,12 @@ export class QuestionPage implements OnInit {
       })
     };
 
-    let userQuestions = this.http.get(`${this.API_URL}/category/${this.categoryId}/questions`, httpOptions);
-    userQuestions.subscribe(
+    this.http.get<any>(`${this.API_URL}/category/${this.categoryId}/questions`, httpOptions)
+    .subscribe(
       result => {
         this.questions = result;
-      });
+      }
+    );
   }
 
   editChoices(id)

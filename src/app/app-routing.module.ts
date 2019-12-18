@@ -64,9 +64,11 @@ const routes: Routes = [
     path: 'category/question/edit', canActivate: [AuthGuardService],
     loadChildren: () => import('./edit-question/edit-question.module').then( m => m.EditQuestionPageModule)
   },
+  {
+    path: 'category/question/choice/edit', canActivate: [AuthGuardService],
+    loadChildren: () => import('./edit-choice/edit-choice.module').then( m => m.EditChoicePageModule)
+  },
   {path: '**', redirectTo: '/home'}
-  
-
 ];
 
 @NgModule({

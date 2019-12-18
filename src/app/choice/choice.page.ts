@@ -94,7 +94,12 @@ export class ChoicePage implements OnInit {
 
   editChoice(id)
   {
-    
+    let navigationExtras: NavigationExtras = {
+      state : {
+        choiceId: id
+      }
+    };
+    this.router.navigateByUrl("category/question/choice/edit", navigationExtras);
   }
 
   async warn() {
