@@ -39,6 +39,7 @@ export class QuestionPage implements OnInit {
     if (this.categoryId == undefined)
     {
       this.router.navigateByUrl("/category");
+      return;
     }
 
     const httpOptions = {

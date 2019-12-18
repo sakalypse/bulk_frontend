@@ -43,6 +43,7 @@ export class CreateChoicePage implements OnInit {
     if (this.fetchedQuestion == undefined)
     {
       this.router.navigateByUrl("/category/question/choice");
+      return;
     }
 
     this.choice = new FormControl('', [Validators.required, Validators.maxLength(100)]);

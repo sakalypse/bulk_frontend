@@ -38,6 +38,7 @@ export class ChoicePage implements OnInit {
     if (this.questionId == undefined)
     {
       this.router.navigateByUrl("/category/question");
+      return;
     }
 
     const httpOptions = {

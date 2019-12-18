@@ -45,6 +45,7 @@ export class CreateQuestionPage implements OnInit {
     if (this.fetchedCategory == undefined)
     {
       this.router.navigateByUrl("/category");
+      return;
     }
 
     this.question = new FormControl('', [Validators.required, Validators.minLength(6), Validators.maxLength(50)]);
