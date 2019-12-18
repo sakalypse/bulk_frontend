@@ -74,7 +74,8 @@ export class EditCategoryPage implements OnInit {
         this.isPublic.setValue(result.isPublic);
         this.language.setValue(result.language);
         this.owner.setValue(result.owner);
-      });
+      }
+    );
   }
 
   categoryUpdateForm(){

@@ -104,7 +104,12 @@ export class QuestionPage implements OnInit {
 
   editQuestion(id)
   {
-
+    let navigationExtras: NavigationExtras = {
+      state : {
+        questionId: id
+      }
+    };
+    this.router.navigate(['category/question/edit'], navigationExtras);
   }
 
   async warn() {

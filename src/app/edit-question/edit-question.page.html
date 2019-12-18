@@ -1,0 +1,38 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Edit question</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content (keyup.enter)="questionUpdateForm()">
+  <form [formGroup]="questionForm" padding-right>
+    <ion-item>
+      <ion-label position="floating">Question</ion-label>
+      <ion-input type="text" formControlName="question" required></ion-input>
+      <div *ngIf="question.invalid && (question.dirty || question.touched)"
+            class="alert alert-danger p-2">
+        <div *ngIf="question.errors.required">
+          Question is required.
+        </div>
+        <div *ngIf="question.hasError('minlength')">
+          Must be at least 6 characters.
+        </div>
+        <div *ngIf="question.hasError('maxlength')">
+          Can't be longer than 50 characters.
+        </div>
+      </div>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Specific choices</ion-label>
+      <ion-toggle checked="false" color="primary" formControlName="hasChoices"></ion-toggle>
+    </ion-item>
+
+    <ion-button 
+      color="primary" 
+      expand="block" 
+      [disabled]="!questionForm.valid" 
+      (click)="questionUpdateForm()">Update</ion-button>
+  </form>
+</ion-content>
+
