@@ -99,7 +99,8 @@ export class QuestionPage implements OnInit {
       },
       () => {
         this.toastr.success('Question successfully deleted', 'Question deletion');
-        this.ngOnInit();
+        this.questions = this.questions.
+                        filter(x => x.questionId !== id);
       });
   }
 

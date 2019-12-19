@@ -19,8 +19,6 @@ export class CategoryPage implements OnInit {
   private API_URL = environment.API_URL_DEV;
   private categories;
 
-  private newCategory: any = null;
-
   constructor(
     @Inject(AuthService)
     private authService: AuthService,

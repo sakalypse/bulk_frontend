@@ -37,6 +37,7 @@ export class ChoicePage implements OnInit {
   ngOnInit() {
     if (this.questionId == undefined)
     {
+      console.log("questionId undefined")
       this.router.navigateByUrl("/category/question");
       return;
     }
@@ -88,7 +89,8 @@ export class ChoicePage implements OnInit {
       },
       () => {
         this.toastr.success('Choice successfully deleted', 'Choice deletion');
-        this.ngOnInit();
+        this.choices = this.choices.
+                        filter(x => x.choiceId !== id);
       });
   }
 
