@@ -7,13 +7,17 @@ import { IonicModule } from '@ionic/angular';
 import { QuestionPageRoutingModule } from './question-routing.module';
 
 import { QuestionPage } from './question.page';
+import { CreateQuestionPageModule } from '../create-question/create-question.module';
+import { EditQuestionPageModule } from '../edit-question/edit-question.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    QuestionPageRoutingModule
+    QuestionPageRoutingModule,
+    CreateQuestionPageModule,
+    EditQuestionPageModule
   ],
   declarations: [QuestionPage]
 })

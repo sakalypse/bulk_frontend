@@ -18,8 +18,7 @@ export class EditCategoryPage implements OnInit {
   private API_URL = environment.API_URL_DEV;
 
   private categoryId: number;
-
-  private updatedCategory;
+  private updatedCategory: any;
 
   private categoryForm: FormGroup;
   private name: FormControl;
@@ -86,7 +85,7 @@ export class EditCategoryPage implements OnInit {
     this.http.put<any>(`${this.API_URL}/category/update/${this.categoryId}`, this.categoryForm.value, httpOptions)
     .subscribe(
       (result) => {
-        //update results
+        //update results can be fetched here
       },
       (error) => {
         this.toastr.error(error, 'Update Error');

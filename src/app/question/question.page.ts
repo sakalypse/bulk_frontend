@@ -5,7 +5,9 @@ import { Storage } from '@ionic/storage';
 import { Router, NavigationExtras, ActivatedRoute } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { ToastrService } from 'ngx-toastr';
-import { AlertController } from '@ionic/angular';
+import { AlertController, ModalController } from '@ionic/angular';
+import { CreateQuestionPage } from '../create-question/create-question.page';
+import { EditQuestionPage } from '../edit-question/edit-question.page';
 
 @Component({
   selector: 'app-question',
@@ -21,6 +23,7 @@ export class QuestionPage implements OnInit {
   constructor(
     @Inject(AuthService)
     private authService: AuthService,
+    public modalController: ModalController,
     handler: HttpBackend, 
     private http: HttpClient,
     private toastr: ToastrService,
@@ -69,12 +72,7 @@ export class QuestionPage implements OnInit {
 
   addQuestion()
   {
-    let navigationExtras: NavigationExtras = {
-      state : {
-        categoryId: this.categoryId
-      }
-    };
-    this.router.navigate(['category/question/create'], navigationExtras);
+    this.presentAddModal();
   }
 
   async deleteQuestion(id)
@@ -106,12 +104,7 @@ export class QuestionPage implements OnInit {
 
   editQuestion(id)
   {
-    let navigationExtras: NavigationExtras = {
-      state : {
-        questionId: id
-      }
-    };
-    this.router.navigate(['category/question/edit'], navigationExtras);
+    this.presentEditModal(id);
   }
 
   async warn() {
@@ -138,5 +131,30 @@ export class QuestionPage implements OnInit {
 
       await confirm.present();
     });
+  }
+
+  async presentAddModal() {
+    const modal = await this.modalController.create({
+      component: CreateQuestionPage,
+      componentProps: { categoryId: this.categoryId }
+    });
+    modal.onDidDismiss().then((data:any)=>{
+      this.questions.push(data.data.newQuestion);
+      });
+    return await modal.present();
+  }
+
+  async presentEditModal(id: number) {
+    const modal = await this.modalController.create({
+      component: EditQuestionPage,
+      componentProps: { questionId: id }
+    });
+    modal.onDidDismiss().then((data:any)=>{
+      this.questions = this.questions.
+                        filter(x => x.questionId !== data.data.updatedQuestion.questionId);
+
+      this.questions.push(data.data.updatedQuestion);
+      });
+    return await modal.present();
   }
 }

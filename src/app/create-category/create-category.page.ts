@@ -3,7 +3,6 @@ import { AuthService } from '../shared/auth.service';
 import { FormControl, Validators, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { HttpBackend, HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Storage } from '@ionic/storage';
-import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { ToastrService } from 'ngx-toastr';
 import { ModalController } from '@ionic/angular';
@@ -32,7 +31,6 @@ export class CreateCategoryPage implements OnInit {
     private http: HttpClient,
     public storage: Storage,
     private toastr: ToastrService,
-    private router: Router,
     public viewCtrl: ModalController) {
       this.http = new HttpClient(handler);
   }

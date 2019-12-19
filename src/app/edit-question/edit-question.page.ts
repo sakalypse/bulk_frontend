@@ -3,9 +3,9 @@ import { AuthService } from '../shared/auth.service';
 import { FormControl, Validators, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { HttpBackend, HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Storage } from '@ionic/storage';
-import { Router, ActivatedRoute } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { ToastrService } from 'ngx-toastr';
+import { ModalController, NavParams } from '@ionic/angular';
 
 @Component({
   selector: 'app-edit-question',
@@ -16,13 +16,14 @@ export class EditQuestionPage implements OnInit {
 
   private API_URL = environment.API_URL_DEV;
 
+  private questionId: number;
+  private updatedQuestion: any;
+
   private questionForm: FormGroup;
   private question: FormControl;
   private hasChoices: FormControl;
   private author: FormControl;
   private category: FormControl;
-
-  private questionId: number;
 
   constructor(
     @Inject(AuthService)
@@ -31,23 +32,13 @@ export class EditQuestionPage implements OnInit {
     private http: HttpClient,
     public storage: Storage,
     private toastr: ToastrService,
-    private route: ActivatedRoute,
-    private router: Router) {
+    public viewCtrl: ModalController,
+    navParams: NavParams) {
       this.http = new HttpClient(handler);
-      this.route.queryParams.subscribe(params => {
-        if (this.router.getCurrentNavigation().extras.state) {
-          this.questionId = this.router.getCurrentNavigation().extras.state.questionId;
-        }
-      });
+      this.questionId=navParams.get('questionId')
   }
 
   ngOnInit() {
-    if (this.questionId == undefined)
-    {
-      this.router.navigateByUrl("/category");
-      return;
-    }
-
     this.question = new FormControl([Validators.required, Validators.minLength(6), Validators.maxLength(50)]);
     this.hasChoices = new FormControl();
     this.author = new FormControl(this.authService.getLoggedUser().userid);
@@ -88,8 +79,6 @@ export class EditQuestionPage implements OnInit {
         'Authorization': 'Bearer ' + this.authService.getToken()
       })
     };
-
-    console.log(this.questionForm.value);
     
     this.http.put<any>(`${this.API_URL}/question/update/${this.questionId}`, this.questionForm.value, httpOptions)
     .subscribe(
@@ -98,9 +87,20 @@ export class EditQuestionPage implements OnInit {
         this.toastr.error(error, 'Update Error');
       },
       () => {
-        this.toastr.success('Question successfully updated', 'Question updated');
-        this.router.navigateByUrl("/category/question");
-        //window.location.reload();
+        //get the updated item
+        this.http.get<any>(`${this.API_URL}/question/${this.questionId}`, httpOptions)
+        .subscribe(
+        (result) => {
+          this.updatedQuestion = result;
+        },
+        (error) => {
+          this.toastr.error(error, 'Update Error');
+        },
+        () => {
+          this.toastr.success('Question successfully updated', 'Question update');
+          
+          this.viewCtrl.dismiss({updatedQuestion: this.updatedQuestion});
+        });
       });
   }
 

@@ -6,6 +6,7 @@ import { Storage } from '@ionic/storage';
 import { Router, ActivatedRoute } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { ToastrService } from 'ngx-toastr';
+import { ModalController, NavParams } from '@ionic/angular';
 
 @Component({
   selector: 'app-create-question',
@@ -22,7 +23,8 @@ export class CreateQuestionPage implements OnInit {
   private author: FormControl;
   private category: FormControl;
 
-  private fetchedCategory: number;
+  private categoryId: number;
+  private newQuestion: any;
 
   constructor(
     @Inject(AuthService)
@@ -31,27 +33,17 @@ export class CreateQuestionPage implements OnInit {
     private http: HttpClient,
     public storage: Storage,
     private toastr: ToastrService,
-    private route: ActivatedRoute,
-    private router: Router) {
+    public viewCtrl: ModalController,
+    navParams: NavParams) {
       this.http = new HttpClient(handler);
-      this.route.queryParams.subscribe(params => {
-        if (this.router.getCurrentNavigation().extras.state) {
-          this.fetchedCategory = this.router.getCurrentNavigation().extras.state.categoryId;
-        }
-      });
+      this.categoryId=navParams.get('categoryId')
   }
 
   ngOnInit() {
-    if (this.fetchedCategory == undefined)
-    {
-      this.router.navigateByUrl("/category");
-      return;
-    }
-
     this.question = new FormControl('', [Validators.required, Validators.minLength(6), Validators.maxLength(50)]);
     this.hasChoices = new FormControl(false);
     this.author = new FormControl(this.authService.getLoggedUser().userid);
-    this.category = new FormControl(this.fetchedCategory);
+    this.category = new FormControl(this.categoryId);
     this.questionForm = new FormGroup({
       question: this.question,
       hasChoices: this.hasChoices,
@@ -72,19 +64,19 @@ export class CreateQuestionPage implements OnInit {
         'Authorization': 'Bearer ' + this.authService.getToken()
       })
     };
-
-    console.log(this.questionForm.value);
     
     this.http.post<any>(`${this.API_URL}/question/create`, this.questionForm.value, httpOptions)
     .subscribe(
-      (result) => {},
+      (result) => {
+        this.newQuestion = result.question;
+      },
       (error) => {
         this.toastr.error(error, 'Creation Error');
       },
       () => {
         this.toastr.success('Question successfully created', 'Question creation');
-        this.router.navigateByUrl("/category/question");
-        //window.location.reload();
+        console.log(this.newQuestion);
+        this.viewCtrl.dismiss({newQuestion: this.newQuestion});
       });
   }
 
