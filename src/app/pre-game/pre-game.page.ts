@@ -15,7 +15,9 @@ import { Socket } from 'ngx-socket-io';
 export class PreGamePage implements OnInit {
   private API_URL = environment.API_URL_DEV;
   private sessionId;
+  private userId;
   private players;
+  private owner;
 
   constructor(
     @Inject(AuthService)
@@ -37,16 +39,15 @@ export class PreGamePage implements OnInit {
         'Authorization': 'Bearer ' + this.authService.getToken()
       })
     };
-    let userid;
     if(this.authService.hasToken()&&
       !this.authService.hasTokenExpired()){
-      userid =  this.authService.getLoggedUser().userid;
+      this.userId =  this.authService.getLoggedUser().userid;
     }
     else{
-      userid = JSON.parse(localStorage.getItem('userIdGuest'));
+      this.userId = JSON.parse(localStorage.getItem('userIdGuest'));
     }
 
-    await this.http.get<any>(`${this.API_URL}/user/${userid}`, httpOptions)
+    await this.http.get<any>(`${this.API_URL}/user/${this.userId}`, httpOptions)
     .toPromise().then(result=>{
       this.sessionId = result.session.sessionId;
     })
@@ -57,27 +58,69 @@ export class PreGamePage implements OnInit {
       result => {
         this.sessionId = result.sessionId;
         this.players = result.players;
+        if(result.owner.userId==this.userId)
+          this.owner=true;
+        else
+          this.owner=false;
     });
 
 
     //initialize socket
-    this.socket.emit('joinSession', userid, this.sessionId);
+    this.socket.emit('joinSession', this.userId, this.sessionId);
 
     //listen for new player
     this.socket.fromEvent('joinSession').
-    subscribe((username: string) => {
-      let player={
-        username:username
-      }
-      this.players.push(player);
+    subscribe(async id => {
+      await this.http.get<any>(`${this.API_URL}/user/${id}`, httpOptions)
+      .toPromise().then(player=>{
+        this.players.push(player);
+      })
+    });
+
+    //listen for player quitting
+    this.socket.fromEvent('quitSession').
+    subscribe(async id => {
+      this.players = this.players.
+                        filter(x => x.userId !== id);
+    });
+
+    //listen for session killed
+    this.socket.fromEvent('killSession').
+    subscribe(async id => {
+      localStorage.removeItem('sessionIds');
+      this.route.navigateByUrl("/host");
     });
   }
 
   quit(){
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type':  'application/json',
+      })
+    };
+    this.http.
+    put<any>(`${this.API_URL}/session/removeuser/${this.sessionId}`,
+    {userId:this.userId},
+    httpOptions).
+    subscribe(
+      result => {
+        this.socket.emit('quitSession', this.userId, this.sessionId);
+      },
+      error => {
+        this.toastr.error(error, 'Quit session error');
+      },
+      () => {
+        this.toastr.success('Session successfully quitted', 'Session');
+        this.route.navigateByUrl("/host");
+      }
+    );
+  }
+
+  delete(){
     this.http.delete<any>(`${this.API_URL}/session/delete/${this.sessionId}`).
     subscribe(
       result => {
-        this.socket.emit('sessionKilled', this.sessionId);
+        this.socket.emit('killSession', this.sessionId);
       },
       error => {
         this.toastr.error(error, 'Quit session error');

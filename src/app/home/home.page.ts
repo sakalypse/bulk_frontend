@@ -48,7 +48,7 @@ export class HomePage implements OnInit{
     this.createForm = new FormGroup({
       categoryId: this.categoryId
     });
-    this.username = new FormControl('', Validators.required);
+    this.username = new FormControl('', [Validators.required, Validators.minLength(6)]);
     this.usernameLogged = new FormControl('');
     this.roomsCode = new FormControl('', Validators.required);
     if(this.authService.hasToken()&&!this.authService.hasTokenExpired()){
@@ -116,8 +116,8 @@ export class HomePage implements OnInit{
 
     let userid;
     //if user not exist, create it
-    if(this.authService.hasToken&&
-        !this.authService.hasTokenExpired){
+    if(this.authService.hasToken()&&
+        !this.authService.hasTokenExpired()){
       userid=this.authService.getLoggedUser().userid;
     }
     else{
@@ -141,15 +141,12 @@ export class HomePage implements OnInit{
         'Content-Type':  'application/json',
       })
     };
-    
     await this.http.
     put<any>(`${this.API_URL}/session/adduser/${data.roomsCode}`,
       {userId:userid},
       httpOptions).
       toPromise().then(
         result => {
-          localStorage.setItem('userIdGuest', JSON.stringify(result));
-          userid = result;
           this.toastr.success('Session successfully joined', 'Session');
           this.route.navigateByUrl("/pre-game")
         }
