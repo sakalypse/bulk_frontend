@@ -6,6 +6,7 @@ import { Storage } from '@ionic/storage';
 import { Router, ActivatedRoute } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { ToastrService } from 'ngx-toastr';
+import { NavParams, ModalController } from '@ionic/angular';
 
 @Component({
   selector: 'app-create-choice',
@@ -20,7 +21,8 @@ export class CreateChoicePage implements OnInit {
   private choice: FormControl;
   private question: FormControl;
 
-  private fetchedQuestion: number;
+  private questionId: number;
+  private newChoice: any;
 
   constructor(
     @Inject(AuthService)
@@ -29,25 +31,15 @@ export class CreateChoicePage implements OnInit {
     private http: HttpClient,
     public storage: Storage,
     private toastr: ToastrService,
-    private route: ActivatedRoute,
-    private router: Router) {
+    public viewCtrl: ModalController,
+    navParams: NavParams) {
       this.http = new HttpClient(handler);
-      this.route.queryParams.subscribe(params => {
-        if (this.router.getCurrentNavigation().extras.state) {
-          this.fetchedQuestion = this.router.getCurrentNavigation().extras.state.questionId;
-        }
-      });
+      this.questionId=navParams.get('questionId');
   }
 
   ngOnInit() {
-    if (this.fetchedQuestion == undefined)
-    {
-      this.router.navigateByUrl("/category/question/choice");
-      return;
-    }
-
     this.choice = new FormControl('', [Validators.required, Validators.maxLength(100)]);
-    this.question = new FormControl(this.fetchedQuestion);
+    this.question = new FormControl(this.questionId);
     this.choiceForm = new FormGroup({
       choice: this.choice,
       question : this.question
@@ -66,19 +58,19 @@ export class CreateChoicePage implements OnInit {
         'Authorization': 'Bearer ' + this.authService.getToken()
       })
     };
-
-    console.log(this.choiceForm.value);
     
     this.http.post<any>(`${this.API_URL}/choice/create`, this.choiceForm.value, httpOptions)
     .subscribe(
-      (result) => {},
+      (result) => {
+        this.newChoice = result.choice;
+      },
       (error) => {
         this.toastr.error(error, 'Creation Error');
       },
       () => {
         this.toastr.success('Choice successfully created', 'Choice creation');
-        this.router.navigateByUrl("/category/question/choice");
-        //window.location.reload();
+
+        this.viewCtrl.dismiss({newChoice: this.newChoice});
       });
   }
 

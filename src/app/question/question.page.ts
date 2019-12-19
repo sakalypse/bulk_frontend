@@ -41,6 +41,7 @@ export class QuestionPage implements OnInit {
   ngOnInit() {
     if (this.categoryId == undefined)
     {
+      console.log("categoryId undefined")
       this.router.navigateByUrl("/category");
       return;
     }

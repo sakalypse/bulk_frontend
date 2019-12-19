@@ -7,13 +7,17 @@ import { IonicModule } from '@ionic/angular';
 import { ChoicePageRoutingModule } from './choice-routing.module';
 
 import { ChoicePage } from './choice.page';
+import { CreateChoicePageModule } from '../create-choice/create-choice.module';
+import { EditChoicePageModule } from '../edit-choice/edit-choice.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    ChoicePageRoutingModule
+    ChoicePageRoutingModule,
+    CreateChoicePageModule,
+    EditChoicePageModule
   ],
   declarations: [ChoicePage]
 })

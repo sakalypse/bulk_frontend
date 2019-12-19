@@ -3,8 +3,10 @@ import { environment } from 'src/environments/environment';
 import { AuthService } from '../shared/auth.service';
 import { HttpBackend, HttpClient, HttpHeaders } from '@angular/common/http';
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
-import { AlertController } from '@ionic/angular';
+import { AlertController, ModalController } from '@ionic/angular';
 import { ToastrService } from 'ngx-toastr';
+import { CreateChoicePage } from '../create-choice/create-choice.page';
+import { EditChoicePage } from '../edit-choice/edit-choice.page';
 
 @Component({
   selector: 'app-choice',
@@ -20,6 +22,7 @@ export class ChoicePage implements OnInit {
   constructor(
     @Inject(AuthService)
     private authService: AuthService,
+    public modalController: ModalController,
     handler: HttpBackend, 
     private http: HttpClient,
     private toastr: ToastrService,
@@ -58,12 +61,7 @@ export class ChoicePage implements OnInit {
 
   addChoice()
   {
-    let navigationExtras: NavigationExtras = {
-      state : {
-        questionId: this.questionId
-      }
-    };
-    this.router.navigateByUrl("category/question/choice/create", navigationExtras);
+    this.presentAddModal();
   }
 
 
@@ -96,12 +94,7 @@ export class ChoicePage implements OnInit {
 
   editChoice(id)
   {
-    let navigationExtras: NavigationExtras = {
-      state : {
-        choiceId: id
-      }
-    };
-    this.router.navigateByUrl("category/question/choice/edit", navigationExtras);
+    this.presentEditModal(id);
   }
 
   async warn() {
@@ -128,5 +121,30 @@ export class ChoicePage implements OnInit {
 
       await confirm.present();
     });
+  }
+
+  async presentAddModal() {
+    const modal = await this.modalController.create({
+      component: CreateChoicePage,
+      componentProps: { questionId: this.questionId }
+    });
+    modal.onDidDismiss().then((data:any)=>{
+      this.choices.push(data.data.newChoice);
+      });
+    return await modal.present();
+  }
+
+  async presentEditModal(id: number) {
+    const modal = await this.modalController.create({
+      component: EditChoicePage,
+      componentProps: { choiceId: id }
+    });
+    modal.onDidDismiss().then((data:any)=>{
+      this.choices = this.choices.
+                        filter(x => x.choiceId !== data.data.updatedChoice.choiceId);
+
+      this.choices.push(data.data.updatedChoice);
+      });
+    return await modal.present();
   }
 }

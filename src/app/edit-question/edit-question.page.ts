@@ -35,7 +35,7 @@ export class EditQuestionPage implements OnInit {
     public viewCtrl: ModalController,
     navParams: NavParams) {
       this.http = new HttpClient(handler);
-      this.questionId=navParams.get('questionId')
+      this.questionId=navParams.get('questionId');
   }
 
   ngOnInit() {

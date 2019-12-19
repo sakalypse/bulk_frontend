@@ -36,7 +36,7 @@ export class CreateQuestionPage implements OnInit {
     public viewCtrl: ModalController,
     navParams: NavParams) {
       this.http = new HttpClient(handler);
-      this.categoryId=navParams.get('categoryId')
+      this.categoryId=navParams.get('categoryId');
   }
 
   ngOnInit() {
@@ -75,7 +75,7 @@ export class CreateQuestionPage implements OnInit {
       },
       () => {
         this.toastr.success('Question successfully created', 'Question creation');
-        console.log(this.newQuestion);
+
         this.viewCtrl.dismiss({newQuestion: this.newQuestion});
       });
   }
