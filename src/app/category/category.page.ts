@@ -88,7 +88,8 @@ export class CategoryPage implements OnInit {
       },
       () => {
         this.toastr.success('Category successfully deleted', 'Category deletion');
-        this.ngOnInit();
+        this.categories = this.categories.
+                        filter(x => x.categoryId !== id);
       });
   }
 
