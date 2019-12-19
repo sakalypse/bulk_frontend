@@ -8,6 +8,8 @@ import { CategoryPageRoutingModule } from './category-routing.module';
 
 import { CategoryPage } from './category.page';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { CreateCategoryPageModule } from '../create-category/create-category.module';
+import { EditCategoryPageModule } from '../edit-category/edit-category.module';
 
 @NgModule({
   imports: [
@@ -15,7 +17,9 @@ import { HttpClientModule, HttpClient } from '@angular/common/http';
     FormsModule,
     ReactiveFormsModule,
     IonicModule,
-    CategoryPageRoutingModule
+    CategoryPageRoutingModule,
+    CreateCategoryPageModule,
+    EditCategoryPageModule
   ],
   declarations: [CategoryPage]
 })

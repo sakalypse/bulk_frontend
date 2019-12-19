@@ -5,7 +5,9 @@ import { Storage } from '@ionic/storage';
 import { Router, NavigationExtras, ActivatedRoute } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { ToastrService } from 'ngx-toastr';
-import { AlertController } from '@ionic/angular';
+import { AlertController, ModalController } from '@ionic/angular';
+import { CreateCategoryPage } from '../create-category/create-category.page';
+import { EditCategoryPage } from '../edit-category/edit-category.page';
 
 @Component({
   selector: 'app-category',
@@ -17,9 +19,12 @@ export class CategoryPage implements OnInit {
   private API_URL = environment.API_URL_DEV;
   private categories;
 
+  private newCategory: any = null;
+
   constructor(
     @Inject(AuthService)
     private authService: AuthService,
+    public modalController: ModalController,
     handler: HttpBackend,
     private http: HttpClient,
     public storage: Storage,
@@ -58,7 +63,7 @@ export class CategoryPage implements OnInit {
 
   addCategory()
   {
-    this.router.navigate(['category/create']);
+    this.presentAddModal();
   }
 
   async deleteCategory(id, index)
@@ -89,12 +94,7 @@ export class CategoryPage implements OnInit {
 
   editCategory(id)
   {
-    let navigationExtras: NavigationExtras = {
-      state : {
-        categoryId: id
-      }
-    };
-    this.router.navigate(['category/edit'], navigationExtras);
+    this.presentEditModal(id);
   }
 
   async warn() {
@@ -121,5 +121,29 @@ export class CategoryPage implements OnInit {
 
       await confirm.present();
     });
+  }
+
+  async presentAddModal() {
+    const modal = await this.modalController.create({
+      component: CreateCategoryPage
+    });
+    modal.onDidDismiss().then((data:any)=>{
+      this.categories.push(data.data.newCategory);
+      });
+    return await modal.present();
+  }
+
+  async presentEditModal(id: number) {
+    const modal = await this.modalController.create({
+      component: EditCategoryPage,
+      componentProps: { categoryId: id }
+    });
+    modal.onDidDismiss().then((data:any)=>{
+      this.categories = this.categories.
+                        filter(x => x.categoryId !== data.data.updatedCategory.categoryId);
+
+      this.categories.push(data.data.updatedCategory);
+      });
+    return await modal.present();
   }
 }

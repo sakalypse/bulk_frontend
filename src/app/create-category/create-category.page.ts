@@ -6,6 +6,7 @@ import { Storage } from '@ionic/storage';
 import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { ToastrService } from 'ngx-toastr';
+import { ModalController } from '@ionic/angular';
 
 @Component({
   selector: 'app-create-category',
@@ -22,6 +23,8 @@ export class CreateCategoryPage implements OnInit {
   private language: FormControl;
   private owner: FormControl;
 
+  private newCategory: any;
+
   constructor(
     @Inject(AuthService)
     private authService: AuthService,
@@ -29,7 +32,8 @@ export class CreateCategoryPage implements OnInit {
     private http: HttpClient,
     public storage: Storage,
     private toastr: ToastrService,
-    private router: Router) {
+    private router: Router,
+    public viewCtrl: ModalController) {
       this.http = new HttpClient(handler);
   }
 
@@ -47,11 +51,6 @@ export class CreateCategoryPage implements OnInit {
   }
 
   categoryCreationForm(){
-    //stop if categoryForm invalid
-    if (this.categoryForm.invalid) {
-      return;
-    }
-
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type':  'application/json',
@@ -61,14 +60,16 @@ export class CreateCategoryPage implements OnInit {
     
     this.http.post<any>(`${this.API_URL}/category/create`, this.categoryForm.value, httpOptions)
     .subscribe(
-      (result) => {},
+      (result) => {
+        this.newCategory = result.category;
+      },
       (error) => {
         this.toastr.error(error, 'Creation Error');
       },
       () => {
         this.toastr.success('Category successfully created', 'Category creation');
-        this.router.navigateByUrl("/category");
-        //window.location.reload();
+      
+        this.viewCtrl.dismiss({newCategory: this.newCategory});
       });
   }
 }

@@ -5,7 +5,7 @@ import { Storage } from '@ionic/storage';
 import { Router, NavigationExtras, ActivatedRoute } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { ToastrService } from 'ngx-toastr';
-import { AlertController } from '@ionic/angular';
+import { AlertController, ModalController, NavParams } from '@ionic/angular';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 @Component({
@@ -18,6 +18,8 @@ export class EditCategoryPage implements OnInit {
   private API_URL = environment.API_URL_DEV;
 
   private categoryId: number;
+
+  private updatedCategory;
 
   private categoryForm: FormGroup;
   private name: FormControl;
@@ -32,23 +34,13 @@ export class EditCategoryPage implements OnInit {
     private http: HttpClient,
     public storage: Storage,
     private toastr: ToastrService,
-    private route: ActivatedRoute,
-    private router: Router) {
+    public viewCtrl: ModalController,
+    navParams: NavParams) {
       this.http = new HttpClient(handler);
-      this.route.queryParams.subscribe(params => {
-        if (this.router.getCurrentNavigation().extras.state) {
-          this.categoryId = this.router.getCurrentNavigation().extras.state.categoryId;
-        }
-      });
+      this.categoryId=navParams.get('categoryId')
   }
 
   ngOnInit() {
-    if (this.categoryId == undefined)
-    {
-      this.router.navigateByUrl("/category");
-      return;
-    }
-
     this.name = new FormControl([Validators.required, Validators.minLength(6), Validators.maxLength(50)]);
           this.isPublic = new FormControl();
           this.language = new FormControl();
@@ -93,14 +85,27 @@ export class EditCategoryPage implements OnInit {
     
     this.http.put<any>(`${this.API_URL}/category/update/${this.categoryId}`, this.categoryForm.value, httpOptions)
     .subscribe(
-      (result) => {},
+      (result) => {
+        //update results
+      },
       (error) => {
         this.toastr.error(error, 'Update Error');
       },
       () => {
-        this.toastr.success('Category successfully updated', 'Category update');
-        this.router.navigateByUrl("/category");
-        //window.location.reload();
+        //get the updated item
+        this.http.get<any>(`${this.API_URL}/category/${this.categoryId}`, httpOptions)
+        .subscribe(
+        (result) => {
+          this.updatedCategory = result;
+        },
+        (error) => {
+          this.toastr.error(error, 'Update Error');
+        },
+        () => {
+          this.toastr.success('Category successfully updated', 'Category update');
+          
+          this.viewCtrl.dismiss({updatedCategory: this.updatedCategory});
+        });
       });
   }
 }

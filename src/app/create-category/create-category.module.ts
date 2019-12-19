@@ -17,6 +17,8 @@ import { HttpClientModule, HttpClient } from '@angular/common/http';
     IonicModule,
     CreateCategoryPageRoutingModule
   ],
-  declarations: [CreateCategoryPage]
+  declarations: [
+    CreateCategoryPage
+  ]
 })
 export class CreateCategoryPageModule {}
