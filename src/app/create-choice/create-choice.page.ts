@@ -74,4 +74,8 @@ export class CreateChoicePage implements OnInit {
       });
   }
 
+  dismissModal()
+  {
+    this.viewCtrl.dismiss({newChoice: null});
+  }
 }

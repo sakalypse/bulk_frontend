@@ -129,7 +129,10 @@ export class ChoicePage implements OnInit {
       componentProps: { questionId: this.questionId }
     });
     modal.onDidDismiss().then((data:any)=>{
-      this.choices.push(data.data.newChoice);
+      if (data.data.newChoice != null)
+      {
+        this.choices.push(data.data.newChoice);
+      }
       });
     return await modal.present();
   }
@@ -140,10 +143,13 @@ export class ChoicePage implements OnInit {
       componentProps: { choiceId: id }
     });
     modal.onDidDismiss().then((data:any)=>{
-      this.choices = this.choices.
-                        filter(x => x.choiceId !== data.data.updatedChoice.choiceId);
+      if (data.data.updatedChoice != null)
+      {
+        this.choices = this.choices.
+                          filter(x => x.choiceId !== data.data.updatedChoice.choiceId);
 
-      this.choices.push(data.data.updatedChoice);
+        this.choices.push(data.data.updatedChoice);
+      }
       });
     return await modal.present();
   }

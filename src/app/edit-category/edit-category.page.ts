@@ -107,4 +107,9 @@ export class EditCategoryPage implements OnInit {
         });
       });
   }
+
+  dismissModal()
+  {
+    this.viewCtrl.dismiss({updatedCategory: null});
+  }
 }

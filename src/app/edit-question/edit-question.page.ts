@@ -104,4 +104,8 @@ export class EditQuestionPage implements OnInit {
       });
   }
 
+  dismissModal()
+  {
+    this.viewCtrl.dismiss({updatedQuestion: null});
+  }
 }

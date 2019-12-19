@@ -127,7 +127,10 @@ export class CategoryPage implements OnInit {
       component: CreateCategoryPage
     });
     modal.onDidDismiss().then((data:any)=>{
-      this.categories.push(data.data.newCategory);
+      if (data.data.newCategory != null)
+      {
+        this.categories.push(data.data.newCategory);
+      }
       });
     return await modal.present();
   }
@@ -138,10 +141,12 @@ export class CategoryPage implements OnInit {
       componentProps: { categoryId: id }
     });
     modal.onDidDismiss().then((data:any)=>{
-      this.categories = this.categories.
-                        filter(x => x.categoryId !== data.data.updatedCategory.categoryId);
-
-      this.categories.push(data.data.updatedCategory);
+      if (data.data.updatedCategory != null)
+      {
+        this.categories = this.categories.
+                          filter(x => x.categoryId !== data.data.updatedCategory.categoryId);
+        this.categories.push(data.data.updatedCategory);
+      }
       });
     return await modal.present();
   }

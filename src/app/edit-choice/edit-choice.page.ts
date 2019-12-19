@@ -98,4 +98,8 @@ export class EditChoicePage implements OnInit {
       });
   }
 
+  dismissModal()
+  {
+    this.viewCtrl.dismiss({updatedChoice: null});
+  }
 }

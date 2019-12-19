@@ -140,7 +140,10 @@ export class QuestionPage implements OnInit {
       componentProps: { categoryId: this.categoryId }
     });
     modal.onDidDismiss().then((data:any)=>{
-      this.questions.push(data.data.newQuestion);
+      if (data.data.newQuestion != null)
+      {
+        this.questions.push(data.data.newQuestion);
+      }
       });
     return await modal.present();
   }
@@ -151,10 +154,13 @@ export class QuestionPage implements OnInit {
       componentProps: { questionId: id }
     });
     modal.onDidDismiss().then((data:any)=>{
-      this.questions = this.questions.
-                        filter(x => x.questionId !== data.data.updatedQuestion.questionId);
+      if (data.data.updatedQuestion != null)
+      {
+        this.questions = this.questions.
+                          filter(x => x.questionId !== data.data.updatedQuestion.questionId);
 
-      this.questions.push(data.data.updatedQuestion);
+        this.questions.push(data.data.updatedQuestion);
+      }
       });
     return await modal.present();
   }

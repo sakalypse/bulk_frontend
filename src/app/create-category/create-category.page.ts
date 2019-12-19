@@ -48,7 +48,8 @@ export class CreateCategoryPage implements OnInit {
     });
   }
 
-  categoryCreationForm(){
+  categoryCreationForm()
+  {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type':  'application/json',
@@ -69,5 +70,10 @@ export class CreateCategoryPage implements OnInit {
       
         this.viewCtrl.dismiss({newCategory: this.newCategory});
       });
+  }
+
+  dismissModal()
+  {
+    this.viewCtrl.dismiss({newCategory: null});
   }
 }

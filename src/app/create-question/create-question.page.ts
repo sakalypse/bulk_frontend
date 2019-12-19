@@ -80,4 +80,8 @@ export class CreateQuestionPage implements OnInit {
       });
   }
 
+  dismissModal()
+  {
+    this.viewCtrl.dismiss({newQuestion: null});
+  }
 }
