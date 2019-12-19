@@ -92,16 +92,14 @@ export class HomePage implements OnInit{
       owner: this.authService.getLoggedUser().userid
     }
     this.http.post<any>(`${this.API_URL}/session/create`, data).
-    subscribe(
+    toPromise().then(
       result => {
-        localStorage.setItem('sessionId', JSON.stringify(result.sessionId));
+        //localStorage.setItem('sessionId', JSON.stringify(result.session));
+        this.toastr.success('Session successfully created', 'Session');
+        this.route.navigateByUrl("/pre-game");
       },
       error => {
         this.toastr.error(error, 'Creation session error');
-      },
-      () => {
-        this.toastr.success('Session successfully created', 'Session');
-        this.route.navigateByUrl("/pre-game");
       }
     );
   }
@@ -116,21 +114,46 @@ export class HomePage implements OnInit{
       roomsCode: this.joinForm.value.roomsCode
     }
 
+    let userid;
     //if user not exist, create it
-    const userid=this.authService.getLoggedUser().userid;
-    if(!userid){
-      //TODO
+    if(this.authService.hasToken&&
+        !this.authService.hasTokenExpired){
+      userid=this.authService.getLoggedUser().userid;
+    }
+    else{
       //create user and apply id to 'userid'
+      //create localStorage guestId
+      await this.http.post<any>(`${this.API_URL}/user/createguest`, data).
+      toPromise().then(
+        result => {
+          localStorage.setItem('userIdGuest', JSON.stringify(result.userId));
+          userid = result.userId;
+        },
+        error => {
+          this.toastr.error(error, 'Creation user error');
+        }
+      );
     }
 
-    //send
-    await this.socket.
-              emit('joinSession', userid, data.roomsCode);
-    this.toastr.success('Session successfully joined', 'Session');
-    this.route.navigateByUrl("/pre-game")
+    //send added user to web socket
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type':  'application/json',
+      })
+    };
     
-    //receive
-    //return this.socket.fromEvent('chat');
+    await this.http.
+    put<any>(`${this.API_URL}/session/adduser/${data.roomsCode}`,
+      {userId:userid},
+      httpOptions).
+      toPromise().then(
+        result => {
+          localStorage.setItem('userIdGuest', JSON.stringify(result));
+          userid = result;
+          this.toastr.success('Session successfully joined', 'Session');
+          this.route.navigateByUrl("/pre-game")
+        }
+      );    
   }
 
 }

@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { HttpClient, HttpErrorResponse, HttpBackend, HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
+import { Socket } from 'ngx-socket-io';
 
 @Component({
   selector: 'app-pre-game',
@@ -14,17 +15,20 @@ import { environment } from 'src/environments/environment';
 export class PreGamePage implements OnInit {
   private API_URL = environment.API_URL_DEV;
   private sessionId;
+  private players;
+
   constructor(
     @Inject(AuthService)
     private authService: AuthService,
     private toastr: ToastrService,
     private handler: HttpBackend, 
     private http: HttpClient,
-    private route: Router) {
+    private route: Router,
+    private socket:Socket) {
     this.http = new HttpClient(handler);
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     //todo check if user has a current session
     //else redirect to home
     const httpOptions = {
@@ -33,18 +37,48 @@ export class PreGamePage implements OnInit {
         'Authorization': 'Bearer ' + this.authService.getToken()
       })
     };
-    const userid =  this.authService.getLoggedUser().userid;
-    let user = this.http.get<any>(`${this.API_URL}/user/${userid}`, httpOptions);
-    user.subscribe(
+    let userid;
+    if(this.authService.hasToken()&&
+      !this.authService.hasTokenExpired()){
+      userid =  this.authService.getLoggedUser().userid;
+    }
+    else{
+      userid = JSON.parse(localStorage.getItem('userIdGuest'));
+    }
+
+    await this.http.get<any>(`${this.API_URL}/user/${userid}`, httpOptions)
+    .toPromise().then(result=>{
+      this.sessionId = result.session.sessionId;
+    })
+
+    //fetch session to know who is owner
+    await this.http.get<any>(`${this.API_URL}/session/${this.sessionId}`, httpOptions)
+    .toPromise().then(
       result => {
-        this.sessionId = result.session.sessionId;
-      });
+        this.sessionId = result.sessionId;
+        this.players = result.players;
+    });
+
+
+    //initialize socket
+    this.socket.emit('joinSession', userid, this.sessionId);
+
+    //listen for new player
+    this.socket.fromEvent('joinSession').
+    subscribe((username: string) => {
+      let player={
+        username:username
+      }
+      this.players.push(player);
+    });
   }
 
   quit(){
     this.http.delete<any>(`${this.API_URL}/session/delete/${this.sessionId}`).
     subscribe(
-      result => {},
+      result => {
+        this.socket.emit('sessionKilled', this.sessionId);
+      },
       error => {
         this.toastr.error(error, 'Quit session error');
       },

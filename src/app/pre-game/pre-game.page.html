@@ -9,5 +9,10 @@
   (click)="quit()">
     <ion-icon slot="icon-only" name="trash"></ion-icon>Quit
   </ion-button>
-
 </ion-content>
+
+<ion-card *ngFor="let player of players">
+  <ion-card-content>
+    {{player.username}}
+  </ion-card-content>
+</ion-card>

@@ -33,7 +33,7 @@ const routes: Routes = [
     loadChildren: () => import('./game/game.module').then( m => m.GamePageModule)
   },
   {
-    path: 'pre-game', canActivate: [AuthGuardService],
+    path: 'pre-game',
     loadChildren: () => import('./pre-game/pre-game.module').then( m => m.PreGamePageModule)
   },
   {
