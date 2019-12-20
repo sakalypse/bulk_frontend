@@ -48,7 +48,7 @@ export class HomePage implements OnInit{
     this.createForm = new FormGroup({
       categoryId: this.categoryId
     });
-    this.username = new FormControl('', [Validators.required, Validators.minLength(6)]);
+    this.username = new FormControl('', [Validators.required, Validators.minLength(3)]);
     this.usernameLogged = new FormControl('');
     this.roomsCode = new FormControl('', Validators.required);
     if(this.authService.hasToken()&&!this.authService.hasTokenExpired()){
