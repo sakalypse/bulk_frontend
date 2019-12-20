@@ -44,30 +44,6 @@ const routes: Routes = [
     path: 'category/question/choice', canActivate: [AuthGuardService],
     loadChildren: () => import('./choice/choice.module').then( m => m.ChoicePageModule)
   },
-  {
-    path: 'category/create', canActivate: [AuthGuardService],
-    loadChildren: () => import('./create-category/create-category.module').then( m => m.CreateCategoryPageModule)
-  },
-  {
-    path: 'category/question/create', canActivate: [AuthGuardService],
-    loadChildren: () => import('./create-question/create-question.module').then( m => m.CreateQuestionPageModule)
-  },
-  {
-    path: 'category/question/choice/create', canActivate: [AuthGuardService],
-    loadChildren: () => import('./create-choice/create-choice.module').then( m => m.CreateChoicePageModule)
-  },
-  {
-    path: 'category/edit', canActivate: [AuthGuardService],
-    loadChildren: () => import('./edit-category/edit-category.module').then( m => m.EditCategoryPageModule)
-  },
-  {
-    path: 'category/question/edit', canActivate: [AuthGuardService],
-    loadChildren: () => import('./edit-question/edit-question.module').then( m => m.EditQuestionPageModule)
-  },
-  {
-    path: 'category/question/choice/edit', canActivate: [AuthGuardService],
-    loadChildren: () => import('./edit-choice/edit-choice.module').then( m => m.EditChoicePageModule)
-  },
   {path: '**', redirectTo: '/home'}
 ];
 
