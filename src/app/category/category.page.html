@@ -32,8 +32,10 @@
                 </ion-col>
                 <ion-col>
                   <div ng-repeat="item in category.questions | filter:query as filtered"></div>
-                  {{category.questions.length}} questions
-                  <ion-button color="primary" fill="solid" (click)="editQuestions(category.categoryId)">Edit questions</ion-button>
+                  <ion-button *ngIf="category.questions.length == 0" color="success" fill="solid" (click)="editQuestions(category.categoryId)">Add questions</ion-button>
+                  <div *ngIf="category.questions.length == 1">{{category.questions.length}} question</div>
+                  <div *ngIf="category.questions.length > 1">{{category.questions.length}} questions</div>
+                  <ion-button *ngIf="category.questions.length > 0" color="primary" fill="solid" (click)="editQuestions(category.categoryId)">Edit questions</ion-button>
                 </ion-col>
                 <ion-col>
                   <ion-button color="danger" fill="solid" (click)="deleteCategory(category.categoryId)">

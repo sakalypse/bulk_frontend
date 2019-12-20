@@ -27,8 +27,11 @@
                 </ion-col>
                 <ion-col>
                   <div ng-repeat="item in question.choices | filter:query as filtered"></div>
-                  {{question.choices.length}} choices
-                  <ion-button *ngIf="question.hasChoices == true" color="primary" fill="solid" (click)="editChoices(question.questionId)">Edit choices</ion-button>
+                  <div *ngIf="question.choices.length == 1">{{question.choices.length}} choice</div>
+                  <div *ngIf="question.choices.length > 1">{{question.choices.length}} choices</div>
+                  <div *ngIf="question.choices.length > 0 && !question.hasChoices">(disabled)</div>
+                  <ion-button *ngIf="question.hasChoices == true && question.choices.length == 0" color="success" fill="solid" (click)="editChoices(question.questionId)">Add choices</ion-button>
+                  <ion-button *ngIf="question.hasChoices == true && question.choices.length > 0" color="primary" fill="solid" (click)="editChoices(question.questionId)">Edit choices</ion-button>
                 </ion-col>
                 <ion-col>
                   <ion-button color="danger" fill="solid" (click)="deleteQuestion(question.questionId)">
