@@ -148,7 +148,7 @@ export class HomePage implements OnInit{
       toPromise().then(
         result => {
           this.toastr.success('Session successfully joined', 'Session');
-          this.route.navigateByUrl("/pre-game")
+          this.route.navigate(['pre-game']);
         }
       );    
   }
