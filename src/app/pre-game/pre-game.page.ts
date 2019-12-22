@@ -18,6 +18,7 @@ export class PreGamePage implements OnInit {
   private userId;
   private players;
   private owner;
+  private session;
 
   constructor(
     @Inject(AuthService)
@@ -49,7 +50,10 @@ export class PreGamePage implements OnInit {
 
     await this.http.get<any>(`${this.API_URL}/user/${this.userId}`, httpOptions)
     .toPromise().then(result=>{
-      this.sessionId = result.session.sessionId;
+      if(result.session!=null)
+        this.sessionId = result.session.sessionId;
+      else  
+        this.sessionId = result.sessionHost.sessionId;
     })
 
     //fetch session to know who is owner
@@ -58,6 +62,7 @@ export class PreGamePage implements OnInit {
       result => {
         this.sessionId = result.sessionId;
         this.players = result.players;
+        this.session = result;
         if(result.owner.userId==this.userId)
           this.owner=true;
         else
@@ -73,7 +78,8 @@ export class PreGamePage implements OnInit {
     subscribe(async id => {
       await this.http.get<any>(`${this.API_URL}/user/${id}`, httpOptions)
       .toPromise().then(player=>{
-        this.players.push(player);
+        if(player.userId!=this.session.owner.userId)
+          this.players.push(player);
       })
     });
 
@@ -87,9 +93,20 @@ export class PreGamePage implements OnInit {
     //listen for session killed
     this.socket.fromEvent('killSession').
     subscribe(async id => {
-      localStorage.removeItem('sessionIds');
-      this.route.navigateByUrl("/host");
+      this.route.navigate(['home']);
     });
+
+    //listen for game started
+    this.socket.fromEvent('joinGame').
+    subscribe(async id => {
+      this.route.navigateByUrl("/game");
+    });
+  }
+
+  ready(){
+    this.socket.emit('joinGame', this.sessionId);
+    this.toastr.success('Game started', 'Game');
+    this.route.navigateByUrl("/host");
   }
 
   quit(){
@@ -111,7 +128,7 @@ export class PreGamePage implements OnInit {
       },
       () => {
         this.toastr.success('Session successfully quitted', 'Session');
-        this.route.navigateByUrl("/host");
+        this.route.navigateByUrl("/home");
       }
     );
   }

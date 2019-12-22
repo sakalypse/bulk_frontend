@@ -29,7 +29,11 @@ const routes: Routes = [
     loadChildren: () => import('./category/category.module').then( m => m.CategoryPageModule)
   },
   {
-    path: 'game', canActivate: [AuthGuardService],
+    path: 'host',
+    loadChildren: () => import('./host/host.module').then( m => m.HostPageModule)
+  },
+  {
+    path: 'game',
     loadChildren: () => import('./game/game.module').then( m => m.GamePageModule)
   },
   {
@@ -44,7 +48,7 @@ const routes: Routes = [
     path: 'category/question/choice', canActivate: [AuthGuardService],
     loadChildren: () => import('./choice/choice.module').then( m => m.ChoicePageModule)
   },
-  {path: '**', redirectTo: '/home'}
+  {path: '**', redirectTo: '/home'}  
 ];
 
 @NgModule({
