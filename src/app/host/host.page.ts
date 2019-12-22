@@ -55,6 +55,8 @@ export class HostPage implements OnInit {
       if(result.sessionHost!=null)
         this.sessionId = result.sessionHost.sessionId;
     })
+    if(this.sessionId==null)
+      this.route.navigate(['home']);
 
     //fetch session
     await this.http.get<any>(`${this.API_URL}/session/${this.sessionId}`, httpOptions)
@@ -69,13 +71,11 @@ export class HostPage implements OnInit {
     });
 
     //fetch questions
-    console.log(this.category);
     await this.http.
     get<any>(`${this.API_URL}/category/${this.category.categoryId}/questions`,
     httpOptions)
     .toPromise().then(
       result => {
-        console.log(result);
         this.questions = result;
         this.currentQuestionCounter = 0;
         this.currentQuestion = this.questions[this.currentQuestionCounter];
@@ -87,44 +87,28 @@ export class HostPage implements OnInit {
     //listen for response
     this.socket.fromEvent('sendResponse').
     subscribe(async (id:number) => {
+      console.log(id);
       this.counterResponse++;
       this.response[id]++;
       if(this.counterResponse>=this.playerName.length){
         this.result();
       }
     });
-
-    /*
-    //listen for player quitting
-    this.socket.fromEvent('quitSession').
-    subscribe(async id => {
-      this.players = this.players.
-                        filter(x => x.userId !== id);
-    });
-
-    //listen for session killed
-    this.socket.fromEvent('killSession').
-    subscribe(async id => {
-      this.route.navigate(['home']);
-    });
-
-    //listen for game started
-    this.socket.fromEvent('joinGame').
-    subscribe(async id => {
-      this.route.navigateByUrl("/game");
-    });
-    */
   }
 
   sendChoice(){
-    let choices;
+    let choices=[];
     if(this.currentQuestion.hasChoices){
-      choices = this.currentQuestion.choices
+      this.currentQuestion.choices.forEach(choice => {
+        choices.push(choice.choice);
+      });
     }else{
-      choices = this.playerName;
+      this.playerName.forEach(player => {
+        choices.push(player);
+      });
     }
     //send choices
-    this.socket.emit('sendChoice',
+    this.socket.emit('sendChoices',
         {sessionId:this.sessionId,
           choices:choices});
     //init responses
@@ -135,21 +119,27 @@ export class HostPage implements OnInit {
   }
 
   result(){
+    console.log(this.response);
     console.log(Math.max.apply(Math,this.response));
+    this.nextQuestion();
+
+    /*
     setTimeout(() => 
     {   
       this.nextQuestion();
     }, 3000);  
+    */
   }
 
   nextQuestion(){
     this.currentQuestionCounter++;
-    if(this.currentQuestion>=this.questions.length)
+    if(this.currentQuestionCounter>=this.questions.length)
       this.endGame();
-
-    this.currentQuestion = this.questions[this.currentQuestionCounter];
-    this.counterResponse=0;
-    this.sendChoice();
+    else{
+      this.currentQuestion = this.questions[this.currentQuestionCounter];
+      this.counterResponse=0;
+      this.sendChoice();
+    }
   }
 
   endGame(){

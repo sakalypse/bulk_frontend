@@ -1,41 +1,34 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>preGame</ion-title>
+    <ion-title>Room's code : {{sessionId}}</ion-title>
+
+    <ion-button
+    *ngIf="owner"
+    color="danger" fill="solid"
+    (click)="delete()">
+      <ion-icon slot="icon-only" name="trash"></ion-icon>Delete session
+    </ion-button>
+  
+    <ion-button
+    *ngIf="!owner"
+    color="danger" fill="solid"
+    (click)="quit()">
+      <ion-icon slot="icon-only" name="close"></ion-icon>Quit
+    </ion-button>
+  
+    <ion-button
+    *ngIf="owner"
+    color="success" fill="solid"
+    (click)="ready()">
+      <ion-icon slot="icon-only" name="play"></ion-icon>Ready
+    </ion-button>  
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <ion-button
-  *ngIf="owner"
-  color="danger" fill="solid"
-  (click)="delete()">
-    <ion-icon slot="icon-only" name="trash"></ion-icon>Delete session
-  </ion-button>
-
-  <ion-button
-  *ngIf="!owner"
-  color="danger" fill="solid"
-  (click)="quit()">
-    <ion-icon slot="icon-only" name="close"></ion-icon>Quit
-  </ion-button>
-
-  <ion-button
-  *ngIf="owner"
-  color="success" fill="solid"
-  (click)="ready()">
-    <ion-icon slot="icon-only" name="play"></ion-icon>Ready
-  </ion-button>
-
-  <ion-card>
+  <ion-card *ngFor="let player of players">
     <ion-card-content>
-      Room's code : {{sessionId}}
+      {{player.username}}
     </ion-card-content>
   </ion-card>
-  
 </ion-content>
-
-<ion-card *ngFor="let player of players">
-  <ion-card-content>
-    {{player.username}}
-  </ion-card-content>
-</ion-card>

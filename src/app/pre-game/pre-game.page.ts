@@ -1,7 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { AuthService } from '../shared/auth.service';
 import { ToastrService } from 'ngx-toastr';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { HttpClient, HttpErrorResponse, HttpBackend, HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
@@ -27,11 +27,15 @@ export class PreGamePage implements OnInit {
     private handler: HttpBackend, 
     private http: HttpClient,
     private route: Router,
-    private socket:Socket) {
+    private socket:Socket,
+    activateRoute:ActivatedRoute) {
     this.http = new HttpClient(handler);
+    activateRoute.params.subscribe(val => {
+      this.oui();
+    });
   }
-
-  async ngOnInit() {
+  async ngOnInit(){}
+  async oui() {
     //todo check if user has a current session
     //else redirect to home
     const httpOptions = {
@@ -55,6 +59,9 @@ export class PreGamePage implements OnInit {
       else  
         this.sessionId = result.sessionHost.sessionId;
     })
+    if(this.sessionId==null)
+      this.route.navigate(['home']);
+
 
     //fetch session to know who is owner
     await this.http.get<any>(`${this.API_URL}/session/${this.sessionId}`, httpOptions)
@@ -99,11 +106,15 @@ export class PreGamePage implements OnInit {
     //listen for game started
     this.socket.fromEvent('joinGame').
     subscribe(async id => {
-      this.route.navigateByUrl("/game");
+      console.log("passe ici");
+      this.route.navigate(["game"]);
     });
   }
 
   ready(){
+    if(this.players.length<2){
+      console.log("ne pas lancé si < 2");
+    }
     this.socket.emit('joinGame', this.sessionId);
     this.toastr.success('Game started', 'Game');
     this.route.navigateByUrl("/host");
@@ -128,7 +139,7 @@ export class PreGamePage implements OnInit {
       },
       () => {
         this.toastr.success('Session successfully quitted', 'Session');
-        this.route.navigateByUrl("/home");
+        this.route.navigate(["home"]);
       }
     );
   }
@@ -144,7 +155,7 @@ export class PreGamePage implements OnInit {
       },
       () => {
         this.toastr.success('Session successfully quitted', 'Session');
-        this.route.navigateByUrl("/host");
+        this.route.navigate(["home"]);
       }
     );
   }
