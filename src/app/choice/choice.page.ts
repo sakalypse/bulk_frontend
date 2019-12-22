@@ -28,7 +28,8 @@ export class ChoicePage implements OnInit {
     private toastr: ToastrService,
     private route: ActivatedRoute,
     private router: Router,
-    private alertController:AlertController
+    private alertController:AlertController,
+    private alertController2:AlertController
     ) {
     this.route.queryParams.subscribe(params => {
       if (this.router.getCurrentNavigation().extras.state) {
@@ -61,7 +62,30 @@ export class ChoicePage implements OnInit {
 
   addChoice()
   {
-    this.presentAddModal();
+    let choicesAmount = 0;
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type':  'application/json',
+        'Authorization': 'Bearer ' + this.authService.getToken()
+      })
+    };
+
+    this.http.get<any>(`${this.API_URL}/question/${this.questionId}/choices`, httpOptions)
+    .subscribe(
+      result => {
+        choicesAmount = result.length;
+
+        if (choicesAmount < 4)
+        {
+          this.presentAddModal();
+        }
+        else
+        {
+          this.presentAlert();
+        }
+      }
+    );
   }
 
 
@@ -153,4 +177,13 @@ export class ChoicePage implements OnInit {
       });
     return await modal.present();
   }
+
+  async presentAlert() {
+    const alert = await this.alertController2.create({
+    message: 'The maximum of choices has been reached',
+    subHeader: 'Operation canceled',
+    buttons: ['Dismiss']
+   });
+   await alert.present(); 
+}
 }
