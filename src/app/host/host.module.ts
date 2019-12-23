@@ -7,13 +7,15 @@ import { IonicModule } from '@ionic/angular';
 import { HostPageRoutingModule } from './host-routing.module';
 
 import { HostPage } from './host.page';
+import { ChartsModule } from 'ng2-charts';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    HostPageRoutingModule
+    HostPageRoutingModule,
+    ChartsModule
   ],
   declarations: [HostPage]
 })

@@ -1,16 +1,45 @@
 <ion-header>
   <ion-toolbar>
     <ion-title>host</ion-title>
+    <ion-button slot='end'
+    color="danger" fill="solid"
+    (click)="delete()">
+      <ion-icon slot="icon-only" name="trash"></ion-icon>Delete session
+    </ion-button>
+  
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <ion-card>
-  <ion-card-header>
-    Question :
-  </ion-card-header>
+    <div class="bar bar-header bar-balanced">
+        <h1 class="title">Score</h1>
+      </div>
+  <ion-card *ngIf="currentQuestion!=null">
+    <ion-card-header>
+      Question :
+    </ion-card-header>
     <ion-card-content>
       {{currentQuestion.question}}
     </ion-card-content>
   </ion-card>
+
+  <canvas baseChart 
+  *ngIf="dataResult!=null"
+  [datasets]="dataResult" 
+  [labels]="dataLabel" 
+  [options]="chartOptions" 
+  legend="true" 
+  chartType="pie">
+  </canvas>
+
+  <div *ngIf="showScore==true">
+    <div class="bar bar-subheader bar-light">
+      <h1 class="title">Score</h1>
+    </div>
+    <ion-card *ngFor="let score of listScore">
+      <ion-card-content>
+        {{score.username}} : {{score.score}}
+      </ion-card-content>
+    </ion-card>
+</div>
 </ion-content>

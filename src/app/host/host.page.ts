@@ -5,6 +5,8 @@ import { HttpBackend, HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Socket } from 'ngx-socket-io';
 import { environment } from 'src/environments/environment';
+import { ChartDataSets } from 'chart.js';
+import { Color, Label } from 'ng2-charts';
 
 @Component({
   selector: 'app-host',
@@ -33,9 +35,28 @@ export class HostPage implements OnInit {
   private playerName=[];
   private response=[];
   private counterResponse=0;
+  private choices=[];
+  private counterScore=0;
+  private listScore=[];
+  private showScore=false;
 
   private currentQuestionCounter;
   private currentQuestion:any;
+
+  private chartOptions = {
+    responsive: true,
+    title: {
+      display: true,
+      text: 'Result :'
+    },
+    legend: {
+      labels: {
+          fontSize: 30
+      }
+    }
+  };
+  private dataResult=null;
+  private dataLabel=null;
 
   async ngOnInit() {
     this.currentQuestion="";
@@ -87,48 +108,73 @@ export class HostPage implements OnInit {
     //listen for response
     this.socket.fromEvent('sendResponse').
     subscribe(async (id:number) => {
-      console.log(id);
       this.counterResponse++;
       this.response[id]++;
       if(this.counterResponse>=this.playerName.length){
         this.result();
       }
     });
+
+    //listen for score
+    this.socket.fromEvent('sendScore').
+    subscribe(async (data:any) => {
+      this.counterScore++;
+      this.listScore.push({username:data.username,
+                            score:data.score})
+      if(this.counterScore>=this.playerName.length){
+        this.listScore.sort(function(obj1, obj2) {
+          // Ascending: first age less than the previous
+          return obj2.score - obj1.score;
+        });
+        this.showScore=true;
+      }
+    });
   }
 
   sendChoice(){
-    let choices=[];
+    this.choices=[];
     if(this.currentQuestion.hasChoices){
       this.currentQuestion.choices.forEach(choice => {
-        choices.push(choice.choice);
+        this.choices.push(choice.choice);
       });
     }else{
       this.playerName.forEach(player => {
-        choices.push(player);
+        this.choices.push(player);
       });
     }
     //send choices
     this.socket.emit('sendChoices',
         {sessionId:this.sessionId,
-          choices:choices});
+          choices:this.choices});
     //init responses
     this.response = [];
-    choices.forEach(choice => {
+    this.choices.forEach(choice => {
       this.response.push(0);
     });
   }
 
   result(){
-    console.log(this.response);
-    console.log(Math.max.apply(Math,this.response));
-    this.nextQuestion();
+    //Show pie chart
+    this.dataResult = [{data:this.response}];
+    this.dataLabel = this.choices;
 
-    /*
+    //send result to players
+    const max = Math.max(...this.response);
+    const resultToSend = [];
+    this.response.forEach(
+      (item, index) => item === max ? resultToSend.push(index): null);
+
+    this.socket.emit('sendResult',
+      {sessionId:this.sessionId,
+        result:resultToSend});
+
     setTimeout(() => 
     {   
       this.nextQuestion();
-    }, 3000);  
-    */
+      this.dataResult = null;
+      this.dataLabel = null;
+    }, 5000);  
+    
   }
 
   nextQuestion(){
@@ -143,7 +189,23 @@ export class HostPage implements OnInit {
   }
 
   endGame(){
-    //TODO
-    console.log("endGame");
+    this.socket.emit('sendEndOfQuestion',this.sessionId);
+    this.currentQuestion = null;
+  }
+
+  delete(){
+    this.http.delete<any>(`${this.API_URL}/session/delete/${this.sessionId}`).
+    subscribe(
+      result => {
+        this.socket.emit('killSession', this.sessionId);
+      },
+      error => {
+        this.toastr.error(error, 'Quit session error');
+      },
+      () => {
+        this.toastr.success('Session successfully quitted', 'Session');
+        this.route.navigate(["home"]);
+      }
+    );
   }
 }
