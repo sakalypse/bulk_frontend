@@ -5,7 +5,7 @@
 export const environment = {
   production: false,
   API_URL_DEV: 'http://localhost:3000'
-  //API_URL_DEV: 'http://192.168.0.28:3000'
+  //API_URL_DEV: 'http://192.168.1.39:3000'
 };
 
 /*

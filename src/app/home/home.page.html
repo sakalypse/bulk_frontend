@@ -78,10 +78,13 @@
           type="text" READONLY
           value="{{this.authService.getLoggedUser().username}}"
           formControlName="usernameLogged"></ion-input>
-          <div *ngIf="username.hasError('minlength')">
-            Must be at least 3 characters.
-          </div>
         </ion-item>
+        <div *ngIf="username.invalid && (username.dirty || username.touched)"
+          class="alert alert-danger p-2">
+            <div *ngIf="username.hasError('minlength')">
+              Must be at least 3 characters.
+            </div>
+        </div>
 				<ion-item>
           <ion-input type="text" placeholder="Room's code"
           formControlName="roomsCode"></ion-input>

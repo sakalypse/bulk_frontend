@@ -13,15 +13,26 @@
 
   <ion-card *ngIf="choices!=null">
     <ion-card-header>
-      Make your choice :
+      <ion-card-title>
+        Make your choice :
+      </ion-card-title>
     </ion-card-header>
     <ion-card-content>
-        <ion-button
-        *ngFor="let choice of choices; let i = index"
-        color="success" fill="solid"
-        (click)="choose(i)">
-          {{choice}}
-        </ion-button>  
+      <ion-grid>
+        <ion-row *ngFor="let choice of choices; let i = index"
+        align-items-center
+        justify-content-center
+        style="display: flex;
+        justify-content: center;">
+          <ion-col col-4 text-center>
+            <ion-button 
+            color="success" fill="solid"
+            (click)="choose(i)">
+              {{choice}}
+            </ion-button> 
+          </ion-col>
+        </ion-row>
+      </ion-grid>
     </ion-card-content>
   </ion-card>
 </ion-content>

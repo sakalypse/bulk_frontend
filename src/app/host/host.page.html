@@ -11,14 +11,11 @@
 </ion-header>
 
 <ion-content>
-    <div class="bar bar-header bar-balanced">
-        <h1 class="title">Score</h1>
-      </div>
   <ion-card *ngIf="currentQuestion!=null">
     <ion-card-header>
-      Question :
+        <ion-card-title>Question :</ion-card-title>
     </ion-card-header>
-    <ion-card-content>
+    <ion-card-content style="font-size:40px">
       {{currentQuestion.question}}
     </ion-card-content>
   </ion-card>
@@ -37,7 +34,7 @@
       <h1 class="title">Score</h1>
     </div>
     <ion-card *ngFor="let score of listScore">
-      <ion-card-content>
+      <ion-card-content style="font-size:40px">
         {{score.username}} : {{score.score}}
       </ion-card-content>
     </ion-card>

@@ -40,7 +40,7 @@ export class HostPage implements OnInit {
   private listScore=[];
   private showScore=false;
 
-  private currentQuestionCounter;
+  private currentQuestionCounter=0;
   private currentQuestion:any;
 
   private chartOptions = {
@@ -102,9 +102,6 @@ export class HostPage implements OnInit {
         this.currentQuestion = this.questions[this.currentQuestionCounter];
     });
 
-    //Envoi les choix de la première question :
-    this.sendChoice();
-
     //listen for response
     this.socket.fromEvent('sendResponse').
     subscribe(async (id:number) => {
@@ -123,12 +120,19 @@ export class HostPage implements OnInit {
                             score:data.score})
       if(this.counterScore>=this.playerName.length){
         this.listScore.sort(function(obj1, obj2) {
-          // Ascending: first age less than the previous
           return obj2.score - obj1.score;
         });
         this.showScore=true;
       }
     });
+
+    //envoie les premiers choix après 4 secondes
+    //le temps que tout le monde soit connectés
+    //Envoi les choix de la première question :
+    setTimeout(() => 
+    {   
+      this.sendChoice();
+    }, 4000); 
   }
 
   sendChoice(){
