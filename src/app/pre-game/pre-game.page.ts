@@ -31,11 +31,11 @@ export class PreGamePage implements OnInit {
     activateRoute:ActivatedRoute) {
     this.http = new HttpClient(handler);
     activateRoute.params.subscribe(val => {
-      this.oui();
+      this.init();
     });
   }
   async ngOnInit(){}
-  async oui() {
+  async init() {
     //todo check if user has a current session
     //else redirect to home
     const httpOptions = {
@@ -61,6 +61,7 @@ export class PreGamePage implements OnInit {
     })
     if(this.sessionId==null)
       this.route.navigate(['home']);
+    
 
 
     //fetch session to know who is owner
@@ -106,18 +107,20 @@ export class PreGamePage implements OnInit {
     //listen for game started
     this.socket.fromEvent('joinGame').
     subscribe(async id => {
-      console.log("passe ici");
       this.route.navigate(["game"]);
     });
   }
 
   ready(){
     if(this.players.length<2){
-      console.log("ne pas lancé si < 2");
+      console.log("ne pas lancé si < 3");
+    }
+    else{
+      
     }
     this.socket.emit('joinGame', this.sessionId);
     this.toastr.success('Game started', 'Game');
-    this.route.navigateByUrl("/host");
+    this.route.navigate(["/host"]);
   }
 
   quit(){

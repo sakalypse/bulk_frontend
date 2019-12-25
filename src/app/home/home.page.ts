@@ -96,7 +96,7 @@ export class HomePage implements OnInit{
       result => {
         //localStorage.setItem('sessionId', JSON.stringify(result.session));
         this.toastr.success('Session successfully created', 'Session');
-        this.route.navigateByUrl("/pre-game");
+        this.route.navigate(["/pre-game"]);
       },
       error => {
         this.toastr.error(error, 'Creation session error');
@@ -130,9 +130,10 @@ export class HomePage implements OnInit{
           userid = result.userId;
         },
         error => {
-          this.toastr.error(error, 'Creation user error');
+          this.toastr.error('Username already taken');
+          throw new Error(error);
         }
-      );
+      ).catch(e => { throw new Error(e);});
     }
 
     //send added user to web socket
@@ -148,7 +149,7 @@ export class HomePage implements OnInit{
       toPromise().then(
         result => {
           this.toastr.success('Session successfully joined', 'Session');
-          this.route.navigate(['pre-game']);
+          this.route.navigateByUrl('pre-game');
         }
       );    
   }

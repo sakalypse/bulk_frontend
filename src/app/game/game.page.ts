@@ -27,6 +27,10 @@ export class GamePage implements OnInit {
   private userId;
   private sessionId;
   private choices;
+  private choiceBuffer;
+  private username;
+
+  private score = 0;
 
   async ngOnInit() {
     this.choices=null;
@@ -47,14 +51,37 @@ export class GamePage implements OnInit {
     .toPromise().then(result=>{
       if(result.session!=null)
         this.sessionId = result.session.sessionId;
+      this.username = result.username;
     })
     if(this.sessionId==null)
       this.route.navigate(['home']);
+
+    //listen for session killed
+    this.socket.fromEvent('killSession').
+    subscribe(async id => {
+      this.route.navigate(['home']);
+    });
 
     //listen for choices
     this.socket.fromEvent('sendChoices').
     subscribe(async (choices:any) => {
       this.choices = choices;
+    });
+
+    //listen for result
+    this.socket.fromEvent('sendResult').
+    subscribe(async (results:any) => {
+      results.forEach(result => {
+        if(result==this.choiceBuffer){
+          this.score++;
+        }
+      });
+    });
+
+    //listen for end of question
+    this.socket.fromEvent('sendEndOfQuestion').
+    subscribe(async sessionId => {
+      this.endOfQuestion();
     });
   }
 
@@ -62,6 +89,15 @@ export class GamePage implements OnInit {
     this.socket.emit('sendResponse',
         {sessionId:this.sessionId,
           response:choiceId});
+    this.choiceBuffer = choiceId;
     this.choices = null;
+  }
+
+  endOfQuestion(){
+    //Send score to host
+    this.socket.emit('sendScore',
+        {sessionId:this.sessionId,
+          username: this.username,
+          score:this.score});
   }
 }
