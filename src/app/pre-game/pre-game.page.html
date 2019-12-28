@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Room's code : {{sessionId}}</ion-title>
+    <ion-title>PRE GAME</ion-title>
 
     <ion-button
     *ngIf="owner"
@@ -26,6 +26,16 @@
 </ion-header>
 
 <ion-content>
+  <ion-card class="room-card">
+    <ion-card-content>
+      <div class="room-card-content">
+        ROOM CODE
+        <br>
+        {{sessionId}}
+      </div>
+    </ion-card-content>
+  </ion-card>
+
   <ion-card *ngFor="let player of players">
     <ion-card-content>
       {{player.username}}
