@@ -85,8 +85,9 @@ export class PreGamePage implements OnInit {
     this.socket.fromEvent('joinSession').
     subscribe(async id => {
       await this.http.get<any>(`${this.API_URL}/user/${id}`, httpOptions)
-      .toPromise().then(player=>{
+      .subscribe(player=>{
         if(player.userId!=this.session.owner.userId)
+          player.color = '#'+(0x1000000+(Math.random())*0xffffff).toString(16).substr(1,6);
           this.players.push(player);
       })
     });
