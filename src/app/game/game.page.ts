@@ -59,6 +59,7 @@ export class GamePage implements OnInit {
     //listen for session killed
     this.socket.fromEvent('killSession').
     subscribe(async id => {
+      this.socket.removeAllListeners();
       this.route.navigate(['home']);
     });
 

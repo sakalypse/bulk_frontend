@@ -182,6 +182,7 @@ export class HostPage implements OnInit {
   }
 
   nextQuestion(){
+    console.log(this.currentQuestionCounter);
     this.currentQuestionCounter++;
     if(this.currentQuestionCounter>=this.questions.length)
       this.endGame();
@@ -202,6 +203,7 @@ export class HostPage implements OnInit {
     subscribe(
       result => {
         this.socket.emit('killSession', this.sessionId);
+        this.socket.removeAllListeners();
       },
       error => {
         this.toastr.error(error, 'Quit session error');
@@ -211,5 +213,9 @@ export class HostPage implements OnInit {
         this.route.navigate(["home"]);
       }
     );
+  }
+
+  ionViewDidLeave(){
+    this.socket.removeAllListeners();
   }
 }

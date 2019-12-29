@@ -137,6 +137,7 @@ export class PreGamePage implements OnInit {
     subscribe(
       result => {
         this.socket.emit('quitSession', this.userId, this.sessionId);
+        this.socket.removeAllListeners();
       },
       error => {
         this.toastr.error(error, 'Quit session error');
@@ -153,6 +154,7 @@ export class PreGamePage implements OnInit {
     subscribe(
       result => {
         this.socket.emit('killSession', this.sessionId);
+        this.socket.removeAllListeners();
       },
       error => {
         this.toastr.error(error, 'Quit session error');
@@ -163,5 +165,4 @@ export class PreGamePage implements OnInit {
       }
     );
   }
-
 }
