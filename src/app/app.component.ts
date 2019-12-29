@@ -23,11 +23,6 @@ export class AppComponent {
       title: 'Manage categories',
       url: '/category',
       icon: 'list'
-    },
-    {
-      title: 'List',
-      url: '/list',
-      icon: 'list'
     }
   ];
 
