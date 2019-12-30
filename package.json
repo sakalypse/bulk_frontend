@@ -2,7 +2,7 @@
   "name": "bulk_frontend",
   "version": "0.0.1",
   "author": "Ionic Framework",
-  "homepage": "https://ionicframework.com/",
+  "homepage": "https://sakalypse.github.io/bulk_frontend/",
   "scripts": {
     "ng": "ng",
     "start": "ng serve --host 0.0.0.0",
