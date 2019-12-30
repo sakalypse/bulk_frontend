@@ -29,13 +29,13 @@ export class AppComponent {
   username:string;
 
   constructor(
-    private platform: Platform,
-    private splashScreen: SplashScreen,
-    private statusBar: StatusBar,
+    public platform: Platform,
+    public splashScreen: SplashScreen,
+    public statusBar: StatusBar,
     @Inject(AuthService)
-    private authService: AuthService,
-    private toastr: ToastrService,
-    private route: Router
+    public authService: AuthService,
+    public toastr: ToastrService,
+    public route: Router
   ) {
     this.initializeApp();
   }

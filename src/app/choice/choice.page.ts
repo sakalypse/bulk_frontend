@@ -15,21 +15,21 @@ import { EditChoicePage } from '../edit-choice/edit-choice.page';
 })
 export class ChoicePage implements OnInit {
 
-  private API_URL = environment.API_URL_DEV;
-  private choices;
+  API_URL = environment.API_URL_DEV;
+  choices;
   questionId: number;
 
   constructor(
     @Inject(AuthService)
-    private authService: AuthService,
+    public authService: AuthService,
     public modalController: ModalController,
     handler: HttpBackend, 
-    private http: HttpClient,
-    private toastr: ToastrService,
-    private route: ActivatedRoute,
-    private router: Router,
-    private alertController:AlertController,
-    private alertController2:AlertController
+    public http: HttpClient,
+    public toastr: ToastrService,
+    public route: ActivatedRoute,
+    public router: Router,
+    public alertController:AlertController,
+    public alertController2:AlertController
     ) {
     this.route.queryParams.subscribe(params => {
       if (this.router.getCurrentNavigation().extras.state) {

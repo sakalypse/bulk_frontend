@@ -16,20 +16,20 @@ import { EditQuestionPage } from '../edit-question/edit-question.page';
 })
 export class QuestionPage implements OnInit {
 
-  private API_URL = environment.API_URL_DEV;
-  private questions;
+  API_URL = environment.API_URL_DEV;
+  questions;
   categoryId: number;
 
   constructor(
     @Inject(AuthService)
-    private authService: AuthService,
+    public authService: AuthService,
     public modalController: ModalController,
     handler: HttpBackend, 
-    private http: HttpClient,
-    private toastr: ToastrService,
-    private route: ActivatedRoute,
-    private router: Router,
-    private alertController:AlertController
+    public http: HttpClient,
+    public toastr: ToastrService,
+    public route: ActivatedRoute,
+    public router: Router,
+    public alertController:AlertController
     ) {
     this.route.queryParams.subscribe(params => {
       if (this.router.getCurrentNavigation().extras.state) {

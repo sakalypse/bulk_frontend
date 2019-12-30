@@ -15,28 +15,28 @@ import { Socket } from 'ngx-socket-io';
   styleUrls: ['home.page.scss'],
 })
 export class HomePage implements OnInit{
-  private API_URL = environment.API_URL_DEV;
+  API_URL = environment.API_URL_DEV;
   currentUser: any;
 
-  private createForm: FormGroup;
-  private categoryId: FormControl;
-  private createOrJoin: FormControl;
+  createForm: FormGroup;
+  categoryId: FormControl;
+  createOrJoin: FormControl;
 
-  private joinForm: FormGroup;
-  private username: FormControl;
-  private usernameLogged: FormControl;
-  private roomsCode: FormControl;
+  joinForm: FormGroup;
+  username: FormControl;
+  usernameLogged: FormControl;
+  roomsCode: FormControl;
 
-  private categories;
+  categories;
 
   constructor(
     @Inject(AuthService)
-    private authService: AuthService,
-    private toastr: ToastrService,
-    private handler: HttpBackend, 
-    private http: HttpClient,
-    private route: Router,
-    private socket: Socket) {
+    public authService: AuthService,
+    public toastr: ToastrService,
+    handler: HttpBackend, 
+    public http: HttpClient,
+    public route: Router,
+    public socket: Socket) {
       this.http = new HttpClient(handler);
   }
 

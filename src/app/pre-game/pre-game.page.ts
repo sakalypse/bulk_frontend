@@ -13,21 +13,21 @@ import { Socket } from 'ngx-socket-io';
   styleUrls: ['./pre-game.page.scss'],
 })
 export class PreGamePage implements OnInit {
-  private API_URL = environment.API_URL_DEV;
-  private sessionId;
-  private userId;
-  private players;
-  private owner;
-  private session;
+  API_URL = environment.API_URL_DEV;
+  sessionId;
+  userId;
+  players;
+  owner;
+  session;
 
   constructor(
     @Inject(AuthService)
-    private authService: AuthService,
-    private toastr: ToastrService,
-    private handler: HttpBackend, 
-    private http: HttpClient,
-    private route: Router,
-    private socket:Socket,
+    public authService: AuthService,
+    public toastr: ToastrService,
+    public handler: HttpBackend, 
+    public http: HttpClient,
+    public route: Router,
+    public socket:Socket,
     activateRoute:ActivatedRoute) {
     this.http = new HttpClient(handler);
     activateRoute.params.subscribe(val => {

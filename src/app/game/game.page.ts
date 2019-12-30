@@ -14,23 +14,23 @@ import { environment } from 'src/environments/environment';
 export class GamePage implements OnInit {
 
   constructor(@Inject(AuthService)
-  private authService: AuthService,
-  private toastr: ToastrService,
-  private handler: HttpBackend, 
-  private http: HttpClient,
-  private route: Router,
-  private socket:Socket) {
+  public authService: AuthService,
+  public toastr: ToastrService,
+  public handler: HttpBackend, 
+  public http: HttpClient,
+  public route: Router,
+  public socket:Socket) {
     this.http = new HttpClient(handler);
   }
 
-  private API_URL = environment.API_URL_DEV;
-  private userId;
-  private sessionId;
-  private choices;
-  private choiceBuffer;
-  private username;
+  API_URL = environment.API_URL_DEV;
+  userId;
+  sessionId;
+  choices;
+  choiceBuffer;
+  username;
 
-  private score = 0;
+  score = 0;
 
   async ngOnInit() {
     this.choices=null;

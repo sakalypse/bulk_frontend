@@ -16,20 +16,20 @@ import { EditCategoryPage } from '../edit-category/edit-category.page';
 })
 export class CategoryPage implements OnInit {
 
-  private API_URL = environment.API_URL_DEV;
-  private categories;
+  API_URL = environment.API_URL_DEV;
+  categories;
 
   constructor(
     @Inject(AuthService)
-    private authService: AuthService,
+    public authService: AuthService,
     public modalController: ModalController,
     handler: HttpBackend,
-    private http: HttpClient,
+    public http: HttpClient,
     public storage: Storage,
-    private toastr: ToastrService,
-    private route: ActivatedRoute,
-    private router: Router,
-    private alertController:AlertController) {
+    public toastr: ToastrService,
+    public route: ActivatedRoute,
+    public router: Router,
+    public alertController:AlertController) {
       this.http = new HttpClient(handler);
   }
 

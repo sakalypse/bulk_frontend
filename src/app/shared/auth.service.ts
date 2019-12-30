@@ -11,11 +11,11 @@ import { Storage } from '@ionic/storage';
 })
 export class AuthService {
 
-  private API_URL = environment.API_URL_DEV;
-  private helper: JwtHelperService;
+  API_URL = environment.API_URL_DEV;
+  helper: JwtHelperService;
 
   constructor(handler: HttpBackend, 
-    private http: HttpClient,
+    public http: HttpClient,
     public storage: Storage) {
     this.http = new HttpClient(handler);
     this.helper = new JwtHelperService();

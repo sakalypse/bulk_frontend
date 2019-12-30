@@ -10,15 +10,15 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./login.page.scss'],
 })
 export class LoginPage implements OnInit {
-  private userForm: FormGroup;
-  private username: FormControl;
-  private password: FormControl;
+  userForm: FormGroup;
+  username: FormControl;
+  password: FormControl;
 
   constructor(
     @Inject(AuthService)
-    private authService: AuthService,
-    private toastr: ToastrService,
-    private router: Router) { }
+    public authService: AuthService,
+    public toastr: ToastrService,
+    public router: Router) { }
 
   ngOnInit() {
     this.username = new FormControl('', Validators.required);

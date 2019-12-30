@@ -15,22 +15,21 @@ import { NavParams, ModalController } from '@ionic/angular';
 })
 export class CreateChoicePage implements OnInit {
 
-  private API_URL = environment.API_URL_DEV;
+  API_URL = environment.API_URL_DEV;
 
-  private choiceForm: FormGroup;
-  private choice: FormControl;
-  private question: FormControl;
-
-  private questionId: number;
-  private newChoice: any;
+  choiceForm: FormGroup;
+  choice: FormControl;
+  question: FormControl;
+  questionId: number;
+  newChoice: any;
 
   constructor(
     @Inject(AuthService)
-    private authService: AuthService,
+    public authService: AuthService,
     handler: HttpBackend,
-    private http: HttpClient,
+    public http: HttpClient,
     public storage: Storage,
-    private toastr: ToastrService,
+    public toastr: ToastrService,
     public viewCtrl: ModalController,
     navParams: NavParams) {
       this.http = new HttpClient(handler);

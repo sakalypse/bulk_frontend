@@ -15,24 +15,24 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 })
 export class EditCategoryPage implements OnInit {
 
-  private API_URL = environment.API_URL_DEV;
+  API_URL = environment.API_URL_DEV;
 
-  private categoryId: number;
-  private updatedCategory: any;
+  categoryId: number;
+  updatedCategory: any;
 
-  private categoryForm: FormGroup;
-  private name: FormControl;
-  private isPublic: FormControl;
-  private language: FormControl;
-  private owner: FormControl;
+  categoryForm: FormGroup;
+  name: FormControl;
+  isPublic: FormControl;
+  language: FormControl;
+  owner: FormControl;
 
   constructor(
     @Inject(AuthService)
-    private authService: AuthService,
+    public authService: AuthService,
     handler: HttpBackend,
-    private http: HttpClient,
+    public http: HttpClient,
     public storage: Storage,
-    private toastr: ToastrService,
+    public toastr: ToastrService,
     public viewCtrl: ModalController,
     navParams: NavParams) {
       this.http = new HttpClient(handler);

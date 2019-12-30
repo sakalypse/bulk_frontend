@@ -16,34 +16,33 @@ import { Color, Label } from 'ng2-charts';
 export class HostPage implements OnInit {
   
   constructor(@Inject(AuthService)
-  private authService: AuthService,
-  private toastr: ToastrService,
-  private handler: HttpBackend, 
-  private http: HttpClient,
-  private route: Router,
-  private socket:Socket) {
+  public authService: AuthService,
+  public toastr: ToastrService,
+  public handler: HttpBackend, 
+  public http: HttpClient,
+  public route: Router,
+  public socket:Socket) {
   this.http = new HttpClient(handler);
  }
 
-  private API_URL = environment.API_URL_DEV;
-  private userId;
-  private sessionId;
-  private session;
-  private players;
-  private category;
-  private questions;
-  private playerName=[];
-  private response=[];
-  private counterResponse=0;
-  private choices=[];
-  private counterScore=0;
-  private listScore=[];
-  private showScore=false;
+  API_URL = environment.API_URL_DEV;
+  userId;
+  sessionId;
+  session;
+  players;
+  category;
+  questions;
+  playerName=[];
+  response=[];
+  counterResponse=0;
+  choices=[];
+  counterScore=0;
+  listScore=[];
+  showScore=false;
+  currentQuestionCounter=0;
+  currentQuestion:any;
 
-  private currentQuestionCounter=0;
-  private currentQuestion:any;
-
-  private chartOptions = {
+  chartOptions = {
     responsive: true,
     title: {
       display: true,
@@ -55,8 +54,8 @@ export class HostPage implements OnInit {
       }
     }
   };
-  private dataResult=null;
-  private dataLabel=null;
+  dataResult=null;
+  dataLabel=null;
 
   async ngOnInit() {
     this.currentQuestion="";

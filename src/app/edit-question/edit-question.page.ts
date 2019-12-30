@@ -14,24 +14,23 @@ import { ModalController, NavParams } from '@ionic/angular';
 })
 export class EditQuestionPage implements OnInit {
 
-  private API_URL = environment.API_URL_DEV;
+  API_URL = environment.API_URL_DEV;
 
-  private questionId: number;
-  private updatedQuestion: any;
-
-  private questionForm: FormGroup;
-  private question: FormControl;
-  private hasChoices: FormControl;
-  private author: FormControl;
-  private category: FormControl;
+  questionId: number;
+  updatedQuestion: any;
+  questionForm: FormGroup;
+  question: FormControl;
+  hasChoices: FormControl;
+  author: FormControl;
+  category: FormControl;
 
   constructor(
     @Inject(AuthService)
-    private authService: AuthService,
+    public authService: AuthService,
     handler: HttpBackend,
-    private http: HttpClient,
+    public http: HttpClient,
     public storage: Storage,
-    private toastr: ToastrService,
+    public toastr: ToastrService,
     public viewCtrl: ModalController,
     navParams: NavParams) {
       this.http = new HttpClient(handler);
