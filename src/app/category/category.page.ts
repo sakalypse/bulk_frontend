@@ -64,7 +64,7 @@ export class CategoryPage implements OnInit {
     this.presentAddModal();
   }
 
-  async deleteCategory(id, index)
+  async deleteCategory(id)
   {
     // show the user a confirm alert.
     const confirmation = await this.warn();

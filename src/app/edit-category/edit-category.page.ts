@@ -51,6 +51,7 @@ export class EditCategoryPage implements OnInit {
             owner: this.owner
           });
 
+          console.log(this.language);
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type':  'application/json',
