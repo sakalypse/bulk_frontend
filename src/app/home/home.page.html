@@ -6,10 +6,10 @@
     <div *ngIf="(!this.authService.hasToken()
                 ||this.authService.hasTokenExpired());
                  else loggedIn" slot="end">
-      <ion-button color="primary" fill="solid" href="signup">
+      <ion-button color="primary" fill="solid" href="#/signup">
         Signup
       </ion-button>
-      <ion-button color="secondary" fill="solid" href="login">
+      <ion-button color="secondary" fill="solid" href="#/login">
         Login
       </ion-button>
     </div>
