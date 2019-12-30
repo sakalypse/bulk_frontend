@@ -16,12 +16,12 @@ export class AppComponent {
   public appPages = [
     {
       title: 'Home',
-      url: '/home',
+      url: 'home',
       icon: 'home'
     },
     {
       title: 'Manage categories',
-      url: '/category',
+      url: 'category',
       icon: 'list'
     }
   ];
