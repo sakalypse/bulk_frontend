@@ -87,7 +87,6 @@ export class PreGamePage implements OnInit {
       await this.http.get<any>(`${this.API_URL}/user/${id}`, httpOptions)
       .subscribe(player=>{
         if(player.userId!=this.session.owner.userId)
-          player.color = '#'+(0x1000000+(Math.random())*0xffffff).toString(16).substr(1,6);
           this.players.push(player);
       })
     });

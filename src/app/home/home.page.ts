@@ -111,7 +111,8 @@ export class HomePage implements OnInit{
 
     let data = {
       username: this.joinForm.value.username,
-      roomsCode: this.joinForm.value.roomsCode
+      roomsCode: this.joinForm.value.roomsCode,
+      color: '#'+(0x1000000+(Math.random())*0xffffff).toString(16).substr(1,6)
     }
 
     let userid;
@@ -119,6 +120,9 @@ export class HomePage implements OnInit{
     if(this.authService.hasToken()&&
         !this.authService.hasTokenExpired()){
       userid=this.authService.getLoggedUser().userid;
+
+      //affect random color to user
+      this.affectColor(userid);
     }
     else{
       //create user and apply id to 'userid'
@@ -154,4 +158,25 @@ export class HomePage implements OnInit{
       );    
   }
 
+  async affectColor(userid)
+  {
+    console.log(userid);
+    let generatedColor = '#'+(0x1000000+(Math.random())*0xffffff).toString(16).substr(1,6);
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type':  'application/json',
+        'Authorization': 'Bearer ' + this.authService.getToken()
+      })
+    };
+    await this.http.
+    put<any>(`${this.API_URL}/user/setcolor/${userid}`,
+    {color:generatedColor},
+      httpOptions).
+      toPromise().then(
+        result => {
+          console.log(result);
+        }
+      );    
+  }
 }
