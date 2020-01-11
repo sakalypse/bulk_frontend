@@ -14,7 +14,7 @@ import { ModalController } from '@ionic/angular';
 export class SelectCategoryPage implements OnInit {
 
   API_URL = environment.API_URL_DEV;
-  categories: any;
+  categories: any = [];
 
   userId: number;
 
