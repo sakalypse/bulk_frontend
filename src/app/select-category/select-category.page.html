@@ -24,12 +24,13 @@
     </ion-item>
 
   <ion-card>
-    <ion-label position="floating">Categories</ion-label>
-    <ion-searchbar></ion-searchbar>
-    <ion-button expand="full" color="light" [strong]="selectedCategory == category.categoryId"  *ngFor="let category of categories" (click)="selectCategory(category.categoryId)">
-      {{category.name}}
-    </ion-button>
-    <!--<ion-item *ngIf="categories.length == 0">No categories found</ion-item>-->
+    <ion-searchbar type="text" debounce="500" (ionInput)="getItems($event)"></ion-searchbar>
+    <ion-list *ngIf="isItemAvailable">
+      <ion-button expand="full" color="light" [strong]="selectedCategory == category.categoryId"  *ngFor="let category of categories" (click)="selectCategory(category.categoryId)">
+        {{category.name}}
+      </ion-button>
+    </ion-list>
+    <!--<ion-item *ngIf="categories.length == 0">No categories found</ion-item> IT WORKS BUT RAISES ERROR-->
   </ion-card>
 
   <ion-button 

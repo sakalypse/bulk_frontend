@@ -20,16 +20,14 @@ export class HomePage implements OnInit{
   API_URL = environment.API_URL_DEV;
   currentUser: any;
 
-  createForm: FormGroup;
-  categoryId: FormControl;
-  createOrJoin: FormControl;
-
   joinForm: FormGroup;
   username: FormControl;
   usernameLogged: FormControl;
   roomsCode: FormControl;
 
   categories;
+  selectedCategory = null;
+  selectedCategoryName;
 
   constructor(
     @Inject(AuthService)
@@ -49,10 +47,6 @@ export class HomePage implements OnInit{
     this.currentUser = this.authService.getLoggedUser();
 
     //init control for form
-    this.categoryId = new FormControl('', Validators.required);
-    this.createForm = new FormGroup({
-      categoryId: this.categoryId
-    });
     this.username = new FormControl('', [Validators.required, Validators.minLength(3)]);
     this.usernameLogged = new FormControl('');
     this.roomsCode = new FormControl('', Validators.required);
@@ -89,11 +83,8 @@ export class HomePage implements OnInit{
   }
 
   createSession() {
-    if (this.createForm.invalid) {
-      return;
-    }
     let data = {
-      category: this.createForm.value.categoryId,
+      category: this.selectedCategory,
       owner: this.authService.getLoggedUser().userid
     }
     this.http.post<any>(`${this.API_URL}/session/create`, data).
@@ -195,9 +186,23 @@ export class HomePage implements OnInit{
       component: SelectCategoryPage
     });
     modal.onDidDismiss().then((data:any)=>{
-      if (data.data.newCategory != null)
+      if (data.data.selectedCategory != null)
       {
-        this.categories.push(data.data.newCategory);
+        this.selectedCategory = data.data.selectedCategory;
+        
+        const httpOptions = {
+          headers: new HttpHeaders({
+            'Content-Type':  'application/json',
+            'Authorization': 'Bearer ' + this.authService.getToken()
+          })
+        };
+    
+        this.http.get<any>(`${this.API_URL}/category/${this.selectedCategory}`, httpOptions)
+        .subscribe(
+          result => {
+            this.selectedCategoryName = result.name;
+          }
+        );
       }
       });
     return await modal.present();

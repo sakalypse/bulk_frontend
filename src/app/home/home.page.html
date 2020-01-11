@@ -45,14 +45,16 @@
     </ion-card-header>
     <ion-card-content>
       <div class="ion-padding">
-        <form [formGroup]="createForm">
-          <ion-button color="secondary" size="large"
+          <ion-button *ngIf="selectedCategory == null" color="secondary" size="large"
             (click)="selectCategory()" expand="block">Select category</ion-button>
+          <ion-item style="margin: auto; width: 100%" *ngIf="selectedCategory != null">
+            <ion-label>{{selectedCategoryName}}</ion-label>
+            <ion-button color="medium" size="medium" (click)="selectCategory()">Select another category</ion-button>
+          </ion-item>
           <div class="ion-padding">
             <ion-button color="secondary" size="large"
-            (click)="createSession()" expand="block" disabled="true">Host</ion-button>
+            (click)="createSession()" expand="block" [disabled]="selectedCategory == null">Host</ion-button>
           </div>
-        </form>
 			</div>
     </ion-card-content>
   </ion-card>

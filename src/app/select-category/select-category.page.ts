@@ -22,6 +22,10 @@ export class SelectCategoryPage implements OnInit {
   language: number = null;
   selectedCategory: number = null;
 
+  //toobal tools
+  isItemAvailable = true;
+  categoriesMemory: any;
+
   constructor(
     @Inject(AuthService)
     public authService: AuthService,
@@ -41,8 +45,6 @@ export class SelectCategoryPage implements OnInit {
   privacyChange(isPublic){
     this.isPublic = isPublic;
 
-    console.log(this.isPublic);
-
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type':  'application/json',
@@ -52,15 +54,19 @@ export class SelectCategoryPage implements OnInit {
 
     if (this.language == null)
     { 
-      if (isPublic)
+      if (isPublic) //goes here when appears
       {
         this.http.get(`${this.API_URL}/category/public`, httpOptions)
-        .subscribe((result: any) => { this.categories = result.filter(x => x.isPublic == this.isPublic); });                             
+        .subscribe((result: any) => {
+          this.categories = result.filter(x => x.isPublic == this.isPublic);
+          this.categoriesMemory = this.categories; });
       }
       else
       {
         this.http.get(`${this.API_URL}/user/${this.userId}/categories`, httpOptions)
-        .subscribe((result: any) => { this.categories = result.filter(x => x.isPublic == this.isPublic); });   
+        .subscribe((result: any) => {
+          this.categories = result.filter(x => x.isPublic == this.isPublic);
+          this.categoriesMemory = this.categories; });
       } 
     }
     else
@@ -68,12 +74,16 @@ export class SelectCategoryPage implements OnInit {
       if (isPublic)
       {
         this.http.get(`${this.API_URL}/category/public`, httpOptions)
-        .subscribe((result: any) => { this.categories = result.filter(x => x.isPublic == this.isPublic && x.language == this.language); });                             
+        .subscribe((result: any) => {
+          this.categories = result.filter(x => x.isPublic == this.isPublic && x.language == this.language);
+          this.categoriesMemory = this.categories; });                          
       }
       else
       {
         this.http.get(`${this.API_URL}/user/${this.userId}/categories`, httpOptions)
-        .subscribe((result: any) => { this.categories = result.filter(x => x.isPublic == this.isPublic && x.language == this.language); });   
+        .subscribe((result: any) => {
+          this.categories = result.filter(x => x.isPublic == this.isPublic && x.language == this.language);
+          this.categoriesMemory = this.categories; });
       }
     }
   }
@@ -83,6 +93,23 @@ export class SelectCategoryPage implements OnInit {
     this.language = language;
 
     this.privacyChange(this.isPublic);
+  }
+
+  getItems(ev: any) {  
+    const val = ev.target.value; // set val to the value of the searchbar
+
+    if (val == '')
+    {
+      this.categories = this.categoriesMemory;
+    }
+   
+    // if the value is an empty string don't filter the items
+    if (val && val.trim() != '') {
+        this.isItemAvailable = true;
+        this.categories = this.categoriesMemory.filter((category) => {
+          return (category.name.toLowerCase().indexOf(val.toLowerCase()) > -1);
+        })
+    }
   }
 
   selectCategory(categoryId)
