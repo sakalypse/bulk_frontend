@@ -1,13 +1,15 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { AuthService } from '../shared/auth.service';
 import { ToastrService } from 'ngx-toastr';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { HttpClient, HttpErrorResponse, HttpBackend, HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from "rxjs/internal/operators";
 import { Socket } from 'ngx-socket-io';
+import { ModalController, AlertController } from '@ionic/angular';
+import { SelectCategoryPage } from '../select-category/select-category.page';
 
 @Component({
   selector: 'app-home',
@@ -32,10 +34,13 @@ export class HomePage implements OnInit{
   constructor(
     @Inject(AuthService)
     public authService: AuthService,
+    public modalController: ModalController,
     public toastr: ToastrService,
     handler: HttpBackend, 
     public http: HttpClient,
-    public route: Router,
+    public route: ActivatedRoute,
+    public router: Router,
+    public alertController:AlertController,
     public socket: Socket) {
       this.http = new HttpClient(handler);
   }
@@ -96,7 +101,7 @@ export class HomePage implements OnInit{
       result => {
         //localStorage.setItem('sessionId', JSON.stringify(result.session));
         this.toastr.success('Session successfully created', 'Session');
-        this.route.navigate(["/pre-game"]);
+        this.router.navigate(["/pre-game"]);
       },
       error => {
         this.toastr.error(error, 'Creation session error');
@@ -153,7 +158,7 @@ export class HomePage implements OnInit{
       toPromise().then(
         result => {
           this.toastr.success('Session successfully joined', 'Session');
-          this.route.navigateByUrl('pre-game');
+          this.router.navigateByUrl('pre-game');
         }
       );    
   }
@@ -178,5 +183,23 @@ export class HomePage implements OnInit{
           console.log(result);
         }
       );    
+  }
+
+  selectCategory()
+  {
+    this.presentSelectModal();
+  }
+
+  async presentSelectModal() {
+    const modal = await this.modalController.create({
+      component: SelectCategoryPage
+    });
+    modal.onDidDismiss().then((data:any)=>{
+      if (data.data.newCategory != null)
+      {
+        this.categories.push(data.data.newCategory);
+      }
+      });
+    return await modal.present();
   }
 }

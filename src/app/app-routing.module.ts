@@ -44,7 +44,8 @@ const routes: Routes = [
     path: 'category/question/choice', canActivate: [AuthGuardService],
     loadChildren: () => import('./choice/choice.module').then( m => m.ChoicePageModule)
   },
-  {path: '**', redirectTo: 'home'}  
+  {path: '**', redirectTo: 'home'}
+ 
 ];
 
 @NgModule({

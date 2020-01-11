@@ -46,17 +46,11 @@
     <ion-card-content>
       <div class="ion-padding">
         <form [formGroup]="createForm">
-          <ion-item>
-            <ion-label>Category</ion-label>
-            <ion-select placeholder="Select a category"
-                        formControlName="categoryId">
-              <ion-select-option *ngFor="let category of categories"
-              value="{{category.categoryId}}">{{category.name}}</ion-select-option>
-            </ion-select>
-          </ion-item>
+          <ion-button color="secondary" size="large"
+            (click)="selectCategory()" expand="block">Select category</ion-button>
           <div class="ion-padding">
             <ion-button color="secondary" size="large"
-            (click)="createSession()" expand="block">Host</ion-button>
+            (click)="createSession()" expand="block" disabled="true">Host</ion-button>
           </div>
         </form>
 			</div>

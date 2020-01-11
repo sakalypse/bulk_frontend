@@ -14,6 +14,7 @@ import { HttpBackend, HttpClientModule, HttpClient, HttpHandler } from '@angular
 import { ToastrModule } from 'ngx-toastr';
 import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 import { environment } from 'src/environments/environment';
+import { SelectCategoryPageModule } from './select-category/select-category.module';
 
 const config: SocketIoConfig = { url: environment.API_URL_DEV, options: {}};
 
@@ -30,6 +31,7 @@ const config: SocketIoConfig = { url: environment.API_URL_DEV, options: {}};
     IonicStorageModule.forRoot(),
     SocketIoModule.forRoot(config),
     AppRoutingModule,
+    SelectCategoryPageModule
   ],
   providers: [
     StatusBar,
