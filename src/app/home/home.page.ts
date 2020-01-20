@@ -29,6 +29,10 @@ export class HomePage implements OnInit{
   selectedCategory = null;
   selectedCategoryName;
 
+  expandHowToPlay = true;
+  expandHostGame = false;
+  expandJoinGame = false;
+
   constructor(
     @Inject(AuthService)
     public authService: AuthService,
@@ -206,5 +210,26 @@ export class HomePage implements OnInit{
       }
       });
     return await modal.present();
+  }
+
+  HowToPlayExpand()
+  {
+    this.expandHowToPlay = true;
+    this.expandHostGame = false;
+    this.expandJoinGame = false;
+  }
+
+  HostGameExpand()
+  {
+    this.expandHostGame = true;
+    this.expandHowToPlay = false;
+    this.expandJoinGame = false;
+  }
+
+  JoinGameExpand()
+  {
+    this.expandJoinGame = true;
+    this.expandHowToPlay = false;
+    this.expandHostGame = false;
   }
 }

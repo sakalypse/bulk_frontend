@@ -24,27 +24,35 @@
 <ion-content>
   <ion-card>
     <div class="banner-container">
-      <img class="banner" src="assets/pictures/bulk-baner-3.png"/>
+      <img class="banner" src="assets/pictures/bulk-banner-v3.jpg"/>
       <img class="name" src="assets/pictures/bulk-text.png"/>
     </div>
-    <ion-card-header>
-      <ion-card-title>Welcome to Bulk</ion-card-title>
-    </ion-card-header>
-    <ion-card-content>
-      <p>
-        Bulk is a fabulous game.<br/>
-        But you'll have to get friends
-      </p>
-    </ion-card-content>
   </ion-card>
 
-  <ion-card *ngIf="this.authService.hasToken()
-  &&!this.authService.hasTokenExpired()" class="create-card">
-    <ion-card-header>
-      <ion-card-title class="ion-text-center">Create a game</ion-card-title>
-    </ion-card-header>
-    <ion-card-content>
-      <div class="ion-padding">
+  <ion-card class="game-card">
+    <mat-accordion>
+      <mat-expansion-panel [expanded]="expandHowToPlay" (click)="HowToPlayExpand()">
+        <mat-expansion-panel-header>
+          <ion-label class="card-title">HOW TO PLAY</ion-label>
+        </mat-expansion-panel-header>
+        <div class="ion-padding">
+          If you are part of the majority, you earn 1 point.
+          <br>
+          You can either create your own questions or try the ones of the community.
+          <br>
+          Questions are packed into categories.
+        </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </ion-card>
+
+  <ion-card *ngIf="this.authService.hasToken() &&!this.authService.hasTokenExpired()" class="game-card">
+    <mat-accordion>
+      <mat-expansion-panel [expanded]="expandHostGame" (click)="HostGameExpand()">
+        <mat-expansion-panel-header>
+          <ion-label class="card-title">HOST GAME</ion-label>
+        </mat-expansion-panel-header>
+        <div class="ion-padding">
           <ion-button *ngIf="selectedCategory == null" color="secondary" size="large"
             (click)="selectCategory()" expand="block">Select category</ion-button>
           <ion-item style="margin: auto; width: 100%" *ngIf="selectedCategory != null">
@@ -55,48 +63,50 @@
             <ion-button color="secondary" size="large"
             (click)="createSession()" expand="block" [disabled]="selectedCategory == null">Host</ion-button>
           </div>
-			</div>
-    </ion-card-content>
+      </div>
+      </mat-expansion-panel>
+    </mat-accordion>
   </ion-card>
 
-
-  <ion-card class="join-card">
-    <ion-card-header>
-      <ion-card-title class="ion-text-center">Join a game</ion-card-title>
-    </ion-card-header>
-    <ion-card-content>
-      <div class="ion-padding">
-        <form [formGroup]="joinForm">
-				<ion-item>
-          <ion-input *ngIf="!this.authService.hasToken()
-          ||this.authService.hasTokenExpired()"
-          type="text" placeholder="Username"
-          formControlName="username"></ion-input>
-          <ion-input *ngIf="this.authService.hasToken()
-          &&!this.authService.hasTokenExpired()"
-          type="text" READONLY
-          value="{{this.authService.getLoggedUser().username}}"
-          formControlName="usernameLogged"></ion-input>
-        </ion-item>
-        <div *ngIf="username.invalid && (username.dirty || username.touched)"
-          class="alert alert-danger p-2">
-            <div *ngIf="username.hasError('minlength')">
-              Must be at least 3 characters.
-            </div>
-        </div>
-				<ion-item>
-          <ion-input type="text" placeholder="Room's code"
-          formControlName="roomsCode"></ion-input>
-        </ion-item>
+  <ion-card class="game-card">
+    <mat-accordion>
+      <mat-expansion-panel [expanded]="expandJoinGame" (click)="JoinGameExpand()">
+        <mat-expansion-panel-header>
+          <ion-label class="card-title">JOIN GAME</ion-label>
+        </mat-expansion-panel-header>
         <div class="ion-padding">
-          <ion-button size="large" (click)="joinSession()" expand="block">Join</ion-button>
+          <form [formGroup]="joinForm">
+          <ion-item>
+            <ion-label position="floating">Username</ion-label>
+            <ion-input *ngIf="!this.authService.hasToken()
+            ||this.authService.hasTokenExpired()"
+            type="text" formControlName="username"></ion-input>
+            <ion-input *ngIf="this.authService.hasToken()
+            &&!this.authService.hasTokenExpired()"
+            type="text" READONLY
+            value="{{this.authService.getLoggedUser().username}}"
+            formControlName="usernameLogged"></ion-input>
+          </ion-item>
+          <div *ngIf="username.invalid && (username.dirty || username.touched)"
+            class="alert alert-danger p-2">
+              <div *ngIf="username.hasError('minlength')">
+                Must be at least 3 characters.
+              </div>
+          </div>
+          <ion-item>
+            <ion-label position="floating">Room's code</ion-label>
+            <ion-input type="text" formControlName="roomsCode"></ion-input>
+          </ion-item>
+          <div class="ion-padding">
+            <ion-button size="large" (click)="joinSession()" expand="block">Join</ion-button>
+          </div>
+          </form>
         </div>
-        </form>
-			</div>
-    </ion-card-content>
+      </mat-expansion-panel>
+    </mat-accordion>
   </ion-card>
 
-  <ion-list lines="none">
+  <ion-list lines="none" class="footer">
     <ion-list-header>
       <ion-label>Developers</ion-label>
     </ion-list-header>

@@ -18,3 +18,19 @@
   max-height:100%;
   object-fit: contain;
 }
+
+.game-card {
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+
+.card-title {
+  font-size: 4vmin;
+  font-weight: bold;
+}
+
+.footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}

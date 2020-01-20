@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouteReuseStrategy } from '@angular/router';
@@ -31,7 +32,8 @@ const config: SocketIoConfig = { url: environment.API_URL_DEV, options: {}};
     IonicStorageModule.forRoot(),
     SocketIoModule.forRoot(config),
     AppRoutingModule,
-    SelectCategoryPageModule
+    SelectCategoryPageModule,
+    NgbModule
   ],
   providers: [
     StatusBar,

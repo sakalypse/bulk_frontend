@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { MatExpansionModule, MatFormFieldModule} from '@angular/material';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
@@ -9,6 +10,8 @@ import { SelectCategoryPageModule } from '../select-category/select-category.mod
 
 @NgModule({
   imports: [
+    MatExpansionModule,
+    MatFormFieldModule,
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
@@ -18,7 +21,7 @@ import { SelectCategoryPageModule } from '../select-category/select-category.mod
         path: '',
         component: HomePage
       }
-    ])
+    ]),
   ],
   declarations: [HomePage]
 })
