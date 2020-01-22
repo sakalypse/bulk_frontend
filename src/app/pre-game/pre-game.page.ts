@@ -112,15 +112,11 @@ export class PreGamePage implements OnInit {
   }
 
   ready(){
-    if(this.players.length<2){
-      console.log("ne pas lancé si < 3");
+    if(this.players.length>2&&this.players.length<11){
+      this.socket.emit('joinGame', this.sessionId);
+      this.toastr.success('Game started', 'Game');
+      this.route.navigate(["/host"]);
     }
-    else{
-      
-    }
-    this.socket.emit('joinGame', this.sessionId);
-    this.toastr.success('Game started', 'Game');
-    this.route.navigate(["/host"]);
   }
 
   quit(){
