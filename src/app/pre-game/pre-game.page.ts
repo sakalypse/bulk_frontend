@@ -19,6 +19,7 @@ export class PreGamePage implements OnInit {
   players;
   owner;
   session;
+  color;
 
   constructor(
     @Inject(AuthService)
@@ -84,10 +85,15 @@ export class PreGamePage implements OnInit {
     //listen for new player
     this.socket.fromEvent('joinSession').
     subscribe(async id => {
+
       await this.http.get<any>(`${this.API_URL}/user/${id}`, httpOptions)
       .subscribe(player=>{
-        if(player.userId!=this.session.owner.userId)
+        if(player.userId != this.session.owner.userId && this.session.players.find(x => x.userId == player.userId) == null)
+        {
+          this.affectColor(id);
+          player.color = this.color;
           this.players.push(player);
+        }
       })
     });
 
@@ -112,7 +118,7 @@ export class PreGamePage implements OnInit {
   }
 
   ready(){
-    if(this.players.length>2&&this.players.length<11){
+    if(this.players.length>2 && this.players.length<11){
       this.socket.emit('joinGame', this.sessionId);
       this.toastr.success('Game started', 'Game');
       this.route.navigate(["/host"]);
@@ -159,5 +165,67 @@ export class PreGamePage implements OnInit {
         this.route.navigate(["home"]);
       }
     );
+  }
+
+  async affectColor(userid)
+  {
+    switch(this.players.length) { 
+      case 0: { 
+         this.color = "#0066ff"; //bleu
+         break; 
+      } 
+      case 1: { 
+         this.color = "#ff5050"; //rouge 
+         break; 
+      } 
+      case 2: { 
+        this.color = "#838383"; //gris
+        break; 
+      } 
+      case 3: { 
+          this.color = "#ff00ff"; //rose
+          break; 
+      } 
+      case 4: { 
+        this.color = "#00cc00"; //vert
+        break; 
+      } 
+      case 5: { 
+          this.color = "#ffff00"; //jaune
+          break; 
+      } 
+      case 6: { 
+        this.color = "#993300"; //marron
+        break; 
+      } 
+      case 7: { 
+          this.color = "#cc00ff"; //violet
+          break; 
+      } 
+      case 8: { 
+        this.color = "#000000"; //noir
+        break; 
+      } 
+      default: { 
+        this.color = "#ff6600"; //orange
+         break; 
+      } 
+    } 
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type':  'application/json',
+        'Authorization': 'Bearer ' + this.authService.getToken()
+      })
+    };
+    await this.http.
+    put<any>(`${this.API_URL}/user/setcolor/${userid}`,
+    {color:this.color},
+      httpOptions).
+      toPromise().then(
+        result => {
+          console.log(result);
+        }
+      );    
   }
 }
