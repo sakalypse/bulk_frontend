@@ -29,11 +29,13 @@ export class GamePage implements OnInit {
   choices;
   choiceBuffer;
   username;
+  didWinAPoint;
 
   score = 0;
 
   async ngOnInit() {
     this.choices=null;
+    this.didWinAPoint=null;
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type':  'application/json',
@@ -66,6 +68,7 @@ export class GamePage implements OnInit {
     //listen for choices
     this.socket.fromEvent('sendChoices').
     subscribe(async (choices:any) => {
+      this.didWinAPoint=null;
       this.choices = choices;
     });
 
@@ -75,6 +78,9 @@ export class GamePage implements OnInit {
       results.forEach(result => {
         if(result==this.choiceBuffer){
           this.score++;
+          this.didWinAPoint=true;
+        }else{
+          this.didWinAPoint=false;
         }
       });
     });

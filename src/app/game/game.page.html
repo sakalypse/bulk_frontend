@@ -35,4 +35,17 @@
       </ion-grid>
     </ion-card-content>
   </ion-card>
+
+  <ion-card *ngIf="didWinAPoint!=null"
+  style="height: 100%;">
+    <ion-card-content [ngStyle]="{'background-color':'green'}"
+    *ngIf="didWinAPoint==true"
+    style="height: 100%;">
+    </ion-card-content>
+    <ion-card-content [ngStyle]="{'background-color':'red'}"
+    *ngIf="didWinAPoint==false"
+    style="height: 100%;">
+    </ion-card-content>
+  </ion-card>
+
 </ion-content>

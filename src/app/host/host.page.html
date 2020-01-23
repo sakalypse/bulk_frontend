@@ -29,14 +29,11 @@
   chartType="pie">
   </canvas>
 
-  <div *ngIf="showScore==true">
-    <div class="bar bar-subheader bar-light">
-      <h1 class="title">Final Score</h1>
-    </div>
-    <ion-card *ngFor="let score of listScore">
-      <ion-card-content style="font-size:40px">
-        {{score.username}} : {{score.score}}
-      </ion-card-content>
-    </ion-card>
-</div>
+  <canvas baseChart 
+  *ngIf="showScore==true"
+  [datasets]="finalScoreResult" 
+  [labels]="finalScoreLabel"
+  [options]="barOptions" 
+  chartType="bar">
+  </canvas>
 </ion-content>

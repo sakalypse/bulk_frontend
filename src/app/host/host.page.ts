@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 import { Socket } from 'ngx-socket-io';
 import { environment } from 'src/environments/environment';
 import { ChartDataSets } from 'chart.js';
-import { Color, Label } from 'ng2-charts';
+import { Color, Label, defaultColors } from 'ng2-charts';
 
 @Component({
   selector: 'app-host',
@@ -41,6 +41,11 @@ export class HostPage implements OnInit {
   showScore=false;
   currentQuestionCounter=0;
   currentQuestion:any;
+  
+  listResultScore=[];
+  listResultPlayer=[];
+  listResult=[];
+  backgroundColor=[];
 
   chartOptions = {
     responsive: true,
@@ -54,8 +59,31 @@ export class HostPage implements OnInit {
       }
     }
   };
+  barOptions = {
+    responsive: true,
+    title: {display: false},
+    legend: {display:false},
+    scales: {
+      xAxes: [{
+        ticks: {
+          beginAtZero:true,
+          stepSize: 1
+        }
+      }],
+      yAxes: [{
+        ticks: {
+          beginAtZero:true,
+          stepSize: 1
+        }
+      }]
+    } 
+  };
+
   dataResult=null;
   dataLabel=null;
+
+  finalScoreResult=null;
+  finalScoreLabel=null;
 
   async ngOnInit() {
     this.currentQuestion="";
@@ -115,14 +143,41 @@ export class HostPage implements OnInit {
     this.socket.fromEvent('sendScore').
     subscribe(async (data:any) => {
       this.counterScore++;
-      this.listScore.push({username:data.username,
-                            score:data.score})
+      this.listResult.push({score:data.score, username:data.username});
+
       if(this.counterScore>=this.playerName.length){
-        this.listScore.sort(function(obj1, obj2) {
+        this.listResult.sort(function(obj1, obj2) {
           return obj2.score - obj1.score;
         });
+        this.listResult.forEach(element => {
+          this.listResultScore.push(element.score);
+          this.listResultPlayer.push(element.username);
+        });
+        for(let i=0;i<this.playerName.length;i++){
+          this.backgroundColor.push('#'+(0x1000000+(Math.random())*0xffffff).toString(16).substr(1,6));
+        }
+        this.finalScoreResult = [{data:this.listResultScore,
+                        backgroundColor: this.backgroundColor}];
+        this.finalScoreLabel = this.listResultPlayer;
         this.showScore=true;
       }
+      /*
+      if(this.counterScore>=this.playerName.length){
+        this.listResultScore.sort(function(obj1, obj2) {
+          return obj2 - obj1;
+        });
+
+        for(let i=0;i<this.playerName.length;i++){
+          this.backgroundColor.push('#'+(0x1000000+(Math.random())*0xffffff).toString(16).substr(1,6));
+        }
+        this.finalScoreResult = [{data:this.listResultScore,
+                        backgroundColor: this.backgroundColor}];
+        this.finalScoreLabel = this.listResultPlayer;
+        
+
+        this.showScore=true;
+      }
+      */
     });
 
     //envoie les premiers choix après 4 secondes
@@ -181,7 +236,6 @@ export class HostPage implements OnInit {
   }
 
   nextQuestion(){
-    console.log(this.currentQuestionCounter);
     this.currentQuestionCounter++;
     if(this.currentQuestionCounter>=this.questions.length)
       this.endGame();
