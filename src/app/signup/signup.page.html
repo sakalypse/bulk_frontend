@@ -48,6 +48,20 @@
       </div>    
     </ion-item>
 
+    <ion-item>
+      <ion-label position="floating">Repeat password</ion-label>
+      <ion-input type="password" formControlName="password2" required></ion-input>
+      <div  *ngIf="password2.invalid && (password2.dirty || password2.touched)"
+            class="alert alert-danger p-2">
+        <div *ngIf="password2.errors.required">
+          Password is required.
+        </div>
+        <div *ngIf="password2.hasError('minlength')">
+          Must be at least 6 characters.
+        </div>
+      </div>    
+    </ion-item>
+
     <ion-button 
       color="primary" 
       expand="block" 

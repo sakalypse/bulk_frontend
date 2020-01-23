@@ -14,6 +14,7 @@ export class SignupPage implements OnInit {
   username: FormControl;
   email: FormControl;
   password: FormControl;
+  password2: FormControl;
 
   constructor(
     @Inject(AuthService)
@@ -25,16 +26,22 @@ export class SignupPage implements OnInit {
     this.username = new FormControl('', [Validators.required, Validators.minLength(6)]);
     this.email = new FormControl('', [Validators.required, Validators.email]);
     this.password = new FormControl('', [Validators.required, Validators.minLength(6)]);
+    this.password2 = new FormControl('', [Validators.required, Validators.minLength(6)]);
     this.userForm = new FormGroup({
       username: this.username,
       email: this.email,
-      password: this.password
+      password: this.password,
+      password2: this.password2
     });
   }
 
   signupForm(){
     //stop if userForm invalid
     if (this.userForm.invalid) {
+      return;
+    }
+    if (this.password.value != this.password2.value) {
+      this.toastr.warning('Passwords are not matching')
       return;
     }
 
