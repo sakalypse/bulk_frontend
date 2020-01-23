@@ -26,9 +26,14 @@
   <ion-card>
     <ion-searchbar type="text" debounce="500" (ionInput)="getItems($event)"></ion-searchbar>
     <ion-list *ngIf="isItemAvailable">
-      <ion-button expand="full" color="light" [strong]="selectedCategory == category.categoryId"  *ngFor="let category of categories" (click)="selectCategory(category.categoryId)">
-        {{category.name}}
-      </ion-button>
+      <div *ngFor="let category of categories" (click)="selectCategory(category.categoryId)">
+        <ion-button expand="full" color="light" *ngIf="category.questions.length == 1" [strong]="selectedCategory == category.categoryId">
+          {{category.name}} ({{category.questions.length}} question)
+        </ion-button>
+        <ion-button expand="full" color="light" *ngIf="category.questions.length > 1" [strong]="selectedCategory == category.categoryId">
+          {{category.name}} ({{category.questions.length}} questions)
+        </ion-button>
+      </div>
     </ion-list>
     <ion-item *ngIf="categories.length == 0">No categories found</ion-item>
   </ion-card>

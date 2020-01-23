@@ -185,5 +185,5 @@ export class ChoicePage implements OnInit {
     buttons: ['Dismiss']
    });
    await alert.present(); 
-}
+  }
 }

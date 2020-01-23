@@ -58,14 +58,14 @@ export class SelectCategoryPage implements OnInit {
       {
         this.http.get(`${this.API_URL}/category/public`, httpOptions)
         .subscribe((result: any) => {
-          this.categories = result.filter(x => x.isPublic == this.isPublic);
+          this.categories = result.filter(x => x.isPublic == this.isPublic && x.questions.length > 0);
           this.categoriesMemory = this.categories; });
       }
       else
       {
         this.http.get(`${this.API_URL}/user/${this.userId}/categories`, httpOptions)
         .subscribe((result: any) => {
-          this.categories = result.filter(x => x.isPublic == this.isPublic);
+          this.categories = result.filter(x => x.isPublic == this.isPublic && x.questions.length > 0);
           this.categoriesMemory = this.categories; });
       } 
     }
@@ -75,14 +75,14 @@ export class SelectCategoryPage implements OnInit {
       {
         this.http.get(`${this.API_URL}/category/public`, httpOptions)
         .subscribe((result: any) => {
-          this.categories = result.filter(x => x.isPublic == this.isPublic && x.language == this.language);
+          this.categories = result.filter(x => x.isPublic == this.isPublic && x.language == this.language && x.questions.length > 0);
           this.categoriesMemory = this.categories; });                          
       }
       else
       {
         this.http.get(`${this.API_URL}/user/${this.userId}/categories`, httpOptions)
         .subscribe((result: any) => {
-          this.categories = result.filter(x => x.isPublic == this.isPublic && x.language == this.language);
+          this.categories = result.filter(x => x.isPublic == this.isPublic && x.language == this.language && x.questions.length > 0);
           this.categoriesMemory = this.categories; });
       }
     }

@@ -29,7 +29,8 @@ export class QuestionPage implements OnInit {
     public toastr: ToastrService,
     public route: ActivatedRoute,
     public router: Router,
-    public alertController:AlertController
+    public alertController:AlertController,
+    public alertController2:AlertController
     ) {
     this.route.queryParams.subscribe(params => {
       if (this.router.getCurrentNavigation().extras.state) {
@@ -73,7 +74,30 @@ export class QuestionPage implements OnInit {
 
   addQuestion()
   {
-    this.presentAddModal();
+    let questionsAmount = 0;
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type':  'application/json',
+        'Authorization': 'Bearer ' + this.authService.getToken()
+      })
+    };
+
+    this.http.get<any>(`${this.API_URL}/category/${this.categoryId}/questions`, httpOptions)
+    .subscribe(
+      result => {
+        questionsAmount = result.length;
+
+        if (questionsAmount < 20)
+        {
+          this.presentAddModal();
+        }
+        else
+        {
+          this.presentAlert();
+        }
+      }
+    );
   }
 
   async deleteQuestion(id)
@@ -163,5 +187,14 @@ export class QuestionPage implements OnInit {
       }
       });
     return await modal.present();
+  }
+
+  async presentAlert() {
+    const alert = await this.alertController2.create({
+    message: 'The maximum of questions has been reached',
+    subHeader: 'Operation canceled',
+    buttons: ['Dismiss']
+   });
+   await alert.present(); 
   }
 }

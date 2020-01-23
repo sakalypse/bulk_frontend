@@ -28,6 +28,7 @@ export class HomePage implements OnInit{
   categories;
   selectedCategory = null;
   selectedCategoryName;
+  selectedCategoryQuestionsLength;
 
   expandHowToPlay = true;
   expandHostGame = false;
@@ -178,8 +179,7 @@ export class HomePage implements OnInit{
         this.http.get<any>(`${this.API_URL}/category/${this.selectedCategory}`, httpOptions)
         .subscribe(
           result => {
-            this.selectedCategoryName = result.name;
-          }
+            this.selectedCategoryName = result.name;          }
         );
       }
       });
