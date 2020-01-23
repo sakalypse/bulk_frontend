@@ -118,7 +118,15 @@ export class PreGamePage implements OnInit {
   }
 
   ready(){
-    if(this.players.length>2 && this.players.length<11){
+    if(this.players.length<2)
+    {
+      this.toastr.warning('You need at leat 3 players to start a game');
+    }
+    else if (this.players.length>10)
+    {
+      this.toastr.warning('You can\'t start a game with more than 10 players');
+    }
+    else {
       this.socket.emit('joinGame', this.sessionId);
       this.toastr.success('Game started', 'Game');
       this.route.navigate(["/host"]);
