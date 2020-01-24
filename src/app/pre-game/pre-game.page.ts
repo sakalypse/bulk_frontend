@@ -118,7 +118,7 @@ export class PreGamePage implements OnInit {
   }
 
   ready(){
-    if(this.players.length<2)
+    if(this.players.length<=2)
     {
       this.toastr.warning('You need at leat 3 players to start a game');
     }
