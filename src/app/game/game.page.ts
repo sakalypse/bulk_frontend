@@ -75,14 +75,15 @@ export class GamePage implements OnInit {
     //listen for result
     this.socket.fromEvent('sendResult').
     subscribe(async (results:any) => {
-      results.forEach(result => {
+      for(let result of results){
         if(result==this.choiceBuffer){
           this.score++;
           this.didWinAPoint=true;
+          break;
         }else{
           this.didWinAPoint=false;
         }
-      });
+      }
     });
 
     //listen for end of question
