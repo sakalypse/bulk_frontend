@@ -43,9 +43,14 @@
               },
               {
                 "input": "node_modules/ionicons/dist/scss/ionicons.scss"
+              },
+              {
+                "input": "node_modules/fullpage.js/dist/fullpage.css"
               }
             ],
-            "scripts": []
+            "scripts": [
+              "node_modules/jquery/dist/jquery.js",
+              "node_modules/fullpage.js/dist/fullpage.js"]
           },
           "configurations": {
             "production": {

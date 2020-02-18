@@ -10,6 +10,7 @@ import { catchError } from "rxjs/internal/operators";
 import { Socket } from 'ngx-socket-io';
 import { ModalController, AlertController } from '@ionic/angular';
 import { SelectCategoryPage } from '../select-category/select-category.page';
+import { MnFullpageOptions } from 'ngx-fullpage';
 
 @Component({
   selector: 'app-home',
@@ -33,6 +34,7 @@ export class HomePage implements OnInit{
   expandHowToPlay = true;
   expandHostGame = false;
   expandJoinGame = false;
+  MnFullpageOptions;
 
   constructor(
     @Inject(AuthService)
@@ -85,6 +87,19 @@ export class HomePage implements OnInit{
           this.categories = result;
         });
     }
+
+
+    this.MnFullpageOptions = MnFullpageOptions.create({
+      controlArrows: false,
+      scrollingSpeed: 1000,
+
+      menu: '.menu',
+      css3: true,
+      anchors: [
+          'menuAnchor1', 'menuAnchor2', 'menuAnchor3',
+          'menuAnchor4', 'menuAnchor5', 'menuAnchor6'
+      ]
+  });
   }
 
   createSession() {

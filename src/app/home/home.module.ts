@@ -7,6 +7,7 @@ import { RouterModule } from '@angular/router';
 
 import { HomePage } from './home.page';
 import { SelectCategoryPageModule } from '../select-category/select-category.module';
+import { MnFullpageModule } from 'ngx-fullpage';
 
 @NgModule({
   imports: [
@@ -16,6 +17,7 @@ import { SelectCategoryPageModule } from '../select-category/select-category.mod
     FormsModule,
     ReactiveFormsModule,
     IonicModule,
+    MnFullpageModule.forRoot(),
     RouterModule.forChild([
       {
         path: '',
